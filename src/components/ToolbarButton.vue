@@ -101,7 +101,6 @@ function addBookmark(evt: PointerEvent, btn: ListButton, index: number) {
   bookmarks.value.push(btn);
   listBtns.value.splice(index, 1);
   qicon.value[index].$el.blur();
-  console.log(qicon.value[index]);
 }
 function removeBookmark(evt: PointerEvent, btn: ListButton, index: number) {
   evt.stopPropagation();

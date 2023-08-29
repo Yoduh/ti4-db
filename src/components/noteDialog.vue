@@ -42,7 +42,6 @@ const noteArrays = computed<Note[]>(() => {
       .map((nt) => {
         if (nt.parentNote) {
           const parent = arrs.find((p) => {
-            console.log(p.id);
             return p.id === nt.parentNote;
           });
           if (parent && !parent.children) {
