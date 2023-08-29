@@ -45,11 +45,13 @@
               icon="help_outline"
             />
           </h5>
-          <UnitTable
-            v-if="tech.unit"
-            :unit="tech.unit"
-            :prereqs="tech.prereqs"
-          />
+          <div v-if="tech.unit" class="q-mb-lg row">
+            <UnitTable
+              :unit="tech.unit"
+              :prereqs="tech.prereqs"
+              class="col col-sm-9 col-md-8 col-lg-5"
+            />
+          </div>
           <div v-else>
             <div>{{ tech.description }}</div>
             <div class="text-italic">
@@ -151,13 +153,4 @@ function toTitleCase(str: string) {
 }
 </script>
 
-<style scoped>
-.q-table {
-  min-width: 30rem;
-  max-width: 30rem;
-}
-
-.q-table :deep(tbody td) {
-  font-size: 18px;
-}
-</style>
+<style scoped></style>

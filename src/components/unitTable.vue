@@ -6,7 +6,6 @@
     :table-style="{
       display: unitColumns(unit).length === 0 ? 'none' : 'block',
     }"
-    style="width: fit-content"
     class="q-table q-mb-xl"
   >
     <template v-slot:top>
@@ -97,4 +96,8 @@ function toTitleCase(str: string) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.q-table :deep(tbody td) {
+  font-size: 18px;
+}
+</style>

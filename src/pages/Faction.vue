@@ -132,8 +132,12 @@
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Units</h5>
-      <div v-for="unit in faction.units" :key="unit.id" class="q-mb-lg">
-        <UnitTable :unit="unit" :prereqs="getUnitPrereqs(unit)" />
+      <div v-for="unit in faction.units" :key="unit.id" class="q-mb-lg row">
+        <UnitTable
+          :unit="unit"
+          :prereqs="getUnitPrereqs(unit)"
+          class="col col-sm-9 col-md-8 col-lg-5"
+        />
       </div>
     </section>
 
@@ -233,15 +237,6 @@ function showNote(item: Ability | Technology | Unit | Leader | PromissoryNote) {
 </script>
 
 <style scoped>
-.q-table {
-  min-width: 30rem;
-  max-width: 30rem;
-}
-
-.q-table :deep(tbody td) {
-  font-size: 18px;
-}
-
 section > div {
   padding-left: 2rem;
 }
