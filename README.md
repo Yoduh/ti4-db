@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ti4-db
 Twilight Imperium Database
 =======
