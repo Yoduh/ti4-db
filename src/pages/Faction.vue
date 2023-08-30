@@ -137,6 +137,7 @@
           :unit="unit"
           :prereqs="getUnitPrereqs(unit)"
           class="col col-sm-9 col-md-8 col-lg-5"
+          @showNote="showNote"
         />
       </div>
     </section>
