@@ -28,6 +28,9 @@
         />
       </h5>
       <div class="text-caption">Number in deck: {{ card.numAvailable }}</div>
+      <div>
+        <strong>{{ card.play }}</strong>
+      </div>
       <div>{{ card.effect }}</div>
     </div>
   </div>
