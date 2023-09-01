@@ -7,9 +7,10 @@
           :to="`/technology/${technology.name.toLowerCase()}`"
           class="link"
         >
-          <TechIcon
+          <TI4Icon
             v-if="technology.name !== 'Unit' && technology.name !== 'Faction'"
-            :type="technology.name"
+            type="tech"
+            :name="technology.name"
             size="56px"
           />{{ technology.name }}</RouterLink
         >
@@ -21,7 +22,7 @@
 
 <script setup lang="ts">
 import { api } from '@/boot/axios';
-import TechIcon from 'components/techIcon.vue';
+import TI4Icon from 'components/ti4Icon.vue';
 import type { Technology } from 'components/models';
 import { ref } from 'vue';
 

@@ -42,9 +42,10 @@
         }`"
       >
         <q-item-section class="row">
-          <TechIcon
-            v-if="showTechIcon(button, listBtn)"
-            :type="listBtn.name"
+          <TI4Icon
+            v-if="showTI4Icon(button, listBtn)"
+            type="tech"
+            :name="listBtn.name"
           /><q-item-label>{{ listBtn.name }}</q-item-label>
         </q-item-section>
         <q-item-section v-if="isFactionList" side>
@@ -59,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import TechIcon from 'components/techIcon.vue';
+import TI4Icon from 'components/ti4Icon.vue';
 import { api } from 'boot/axios';
 import type { NavButton } from './models';
 import { ref } from 'vue';
@@ -88,7 +89,7 @@ if (props.button.endpoint === '/faction/names') {
   isFactionList.value = true;
 }
 
-function showTechIcon(button: NavButton, listBtn: ListButton) {
+function showTI4Icon(button: NavButton, listBtn: ListButton) {
   return (
     button.label === 'Technology' && !['Unit', 'Faction'].includes(listBtn.name)
   );

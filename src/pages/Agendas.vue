@@ -5,7 +5,7 @@
       filled
       @update:model-value="filterAgendas"
       type="search"
-      hint="Filter"
+      hint="Search"
       class="q-mt-lg"
     >
       <template v-slot:append>

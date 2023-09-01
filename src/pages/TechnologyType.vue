@@ -5,7 +5,7 @@
       filled
       @update:model-value="filterTechs"
       type="search"
-      hint="Filter"
+      hint="Search"
       class="q-mt-lg"
     >
       <template v-slot:append>
@@ -19,9 +19,10 @@
           <span v-if="i === 1">Faction </span
           >{{ toTitleCase(techType) }} Technologies
         </h3>
-        <TechIcon
+        <TI4Icon
           v-if="techType !== 'unit' && techType !== 'faction'"
-          :type="techType"
+          type="tech"
+          :name="techType"
           size="56px"
         />
       </div>
@@ -57,8 +58,9 @@
             <div class="text-italic">
               Pre-requisites: <span v-if="!tech.prereqs">None</span>
               <span v-else v-for="(prereq, idx) in tech.prereqs" :key="idx">
-                <TechIcon
-                  :type="
+                <TI4Icon
+                  type="tech"
+                  :name="
                     tech.techType === 'Unit' ? prereq.techType : tech.techType
                   "
                   :quantity="prereq?.quantity"
@@ -82,7 +84,7 @@
 import { api } from '@/boot/axios';
 import { computed, ref, watch } from 'vue';
 import type { Technology, Unit, Note } from 'components/models';
-import TechIcon from 'components/techIcon.vue';
+import TI4Icon from 'components/ti4Icon.vue';
 import NoteDialog from 'components/noteDialog.vue';
 import UnitTable from 'components/unitTable.vue';
 import { groupBy } from 'lodash';

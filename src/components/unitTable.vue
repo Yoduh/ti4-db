@@ -29,7 +29,11 @@
         <div class="q-mb-sm" v-if="prereqs">
           Pre-requisites:
           <span v-for="(prereq, idx) in prereqs" :key="idx">
-            <TechIcon :type="prereq.techType" :quantity="prereq?.quantity" />
+            <TI4Icon
+              type="tech"
+              :name="prereq.techType"
+              :quantity="prereq?.quantity"
+            />
           </span>
         </div>
         <div>
@@ -51,7 +55,7 @@
 <script setup lang="ts">
 import type { Unit } from 'components/models';
 import { QTableProps } from 'quasar';
-import TechIcon from 'components/techIcon.vue';
+import TI4Icon from 'components/ti4Icon.vue';
 
 defineProps<{
   unit: Unit;

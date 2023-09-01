@@ -33,7 +33,11 @@
           :key="tech.id"
           class="q-px-md"
         >
-          <TechIcon v-if="tech.techType !== 'Unit'" :type="tech.techType" />
+          <TI4Icon
+            v-if="tech.techType !== 'Unit'"
+            type="tech"
+            :name="tech.techType"
+          />
           {{ tech.name }}
         </div>
       </div>
@@ -147,9 +151,10 @@
       <div v-for="tech in faction.factionTech" :key="tech.id" class="q-mb-md">
         <div v-if="tech.techType !== 'Unit'">
           <div class="row items-center">
-            <TechIcon
+            <TI4Icon
               v-if="tech.techType !== 'Unit'"
-              :type="tech.techType"
+              type="tech"
+              :name="tech.techType"
             /><strong
               >{{ tech.name }}<span v-if="tech.isOmega"> &Omega;</span></strong
             ><q-btn
@@ -169,8 +174,9 @@
           <div class="q-mb-sm">
             Pre-requisites:
             <span v-for="(prereq, idx) in tech.prereqs" :key="idx">
-              <TechIcon
-                :type="
+              <TI4Icon
+                type="tech"
+                :name="
                   tech.techType === 'Unit' ? prereq.techType : tech.techType
                 "
                 :quantity="prereq?.quantity"
@@ -200,7 +206,7 @@ import type {
   Note,
 } from 'components/models';
 import { api } from '@/boot/axios';
-import TechIcon from 'components/techIcon.vue';
+import TI4Icon from 'components/ti4Icon.vue';
 import NoteDialog from 'components/noteDialog.vue';
 import UnitTable from '@/components/unitTable.vue';
 
