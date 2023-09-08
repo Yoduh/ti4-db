@@ -100,7 +100,6 @@ const buttons = reactive<NavButton[]>([
     id: 5,
     label: 'Rules',
     color: 'black',
-    endpoint: '/rules',
     disabled: false,
     splitBtn: false,
   },
