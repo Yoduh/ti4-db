@@ -168,7 +168,7 @@
           :unit="unit"
           :prereqs="getUnitPrereqs(unit)"
           class="col col-sm-9 col-md-8 col-lg-5"
-          @showNote="showNote"
+          @showNote="showNote(unit)"
         />
       </div>
     </section>
@@ -248,16 +248,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import type {
-  Faction,
-  Technology,
-  Planet,
-  Unit,
-  Ability,
-  Leader,
-  PromissoryNote,
-  Note,
-} from 'components/models';
+import type { Faction, Planet, Unit, Note } from 'components/models';
 import { api } from '@/boot/axios';
 import TI4Icon from 'components/ti4Icon.vue';
 import NoteDialog from 'components/noteDialog.vue';
@@ -300,13 +291,14 @@ function getUnitPrereqs(unit: Unit) {
 const noteDialog = ref(false);
 const noteName = ref('');
 const noteTexts = ref<Note[] | undefined>([]);
-function showNote(item: Ability | Technology | Unit | Leader | PromissoryNote) {
-  noteName.value = item.name;
+function showNote(item: Partial<{ name: string; notes: Note[] }>) {
+  noteName.value = item.name as string;
   noteTexts.value = item.notes;
   noteDialog.value = true;
 }
 
-const keleresNote = {
+// Dammit Keleres, only for you...
+const keleresNote: { name: string; notes: Note[] } = {
   name: 'Custodia Vigilia',
   notes: [
     {

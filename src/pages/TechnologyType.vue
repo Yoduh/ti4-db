@@ -51,6 +51,7 @@
               :unit="tech.unit"
               :prereqs="tech.prereqs"
               class="col col-sm-9 col-md-8 col-lg-5"
+              @showNote="showNote(tech.unit)"
             />
           </div>
           <div v-else>

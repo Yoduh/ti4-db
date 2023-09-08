@@ -14,7 +14,7 @@
           <div>{{ unit.name }}</div>
           <q-btn
             v-if="unit.notes && unit.notes.length > 0"
-            @click="$emit('showNote', unit)"
+            @click="$emit('showNote')"
             color="amber-4"
             round
             dense

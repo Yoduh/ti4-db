@@ -122,7 +122,7 @@ export type Unit = {
 
 export type Note = {
   id: number;
-  parentNote: number;
+  parentNote: number | null;
   text: string;
   children?: Note[];
 };
