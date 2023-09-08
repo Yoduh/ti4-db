@@ -11,8 +11,9 @@ export type NavButton = {
   id: number;
   label: string;
   color: string;
-  endpoint: string;
+  endpoint?: string;
   disabled: boolean;
+  splitBtn: boolean;
 };
 
 export type Faction = {
@@ -40,6 +41,8 @@ export type Planet = {
   tech: string;
   features: Array<{ name: string }>;
   tile: number;
+  faction?: Faction;
+  notes?: Note[];
 };
 
 export type Ability = {

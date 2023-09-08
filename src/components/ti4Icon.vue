@@ -13,7 +13,7 @@
 import { computed } from 'vue';
 
 interface Props {
-  type: string;
+  type: 'tech' | 'trait';
   name: string;
   quantity?: number;
   size?: string;
@@ -27,8 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
 const icon = computed(() => {
   const name = props.name.toLowerCase();
   return new URL(
-    `../assets/${props.type}-${name.toLowerCase()}.${
-      props.type === 'tech' || name === 'frontier' ? 'png' : 'svg'
+    `../assets/${props.type}-${name}.${
+      props.type === 'trait' &&
+      ['hazardous', 'cultural', 'industrial'].includes(name)
+        ? 'svg'
+        : 'webp'
     }`,
     import.meta.url
   ).href;

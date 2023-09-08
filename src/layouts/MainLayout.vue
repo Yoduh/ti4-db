@@ -45,6 +45,7 @@
 import { ref, reactive } from 'vue';
 import Toolbar from 'components/Toolbar.vue';
 import { onClickOutside } from '@vueuse/core';
+import type { NavButton } from '@/components/models';
 
 const drawer = ref(false);
 const drawerTarget = ref();
@@ -54,13 +55,14 @@ onClickOutside(drawerTarget, (evt: PointerEvent) => {
   }
 });
 
-const buttons = reactive([
+const buttons = reactive<NavButton[]>([
   {
     id: 0,
     label: 'Factions',
     color: 'red',
     endpoint: '/faction/names',
     disabled: false,
+    splitBtn: true,
   },
   {
     id: 1,
@@ -68,14 +70,14 @@ const buttons = reactive([
     color: 'green',
     endpoint: '/technology/types',
     disabled: false,
+    splitBtn: true,
   },
   {
     id: 2,
     label: 'Planets',
     color: 'blue',
-    endpoint: '',
-    // endpoint: '/planet/trait',
-    disabled: true,
+    disabled: false,
+    splitBtn: false,
   },
   {
     id: 3,
@@ -84,6 +86,7 @@ const buttons = reactive([
     endpoint: '',
     // endpoint: '/unit/type',
     disabled: true,
+    splitBtn: true,
   },
   {
     id: 4,
@@ -91,13 +94,15 @@ const buttons = reactive([
     color: 'pink',
     endpoint: '/components',
     disabled: false,
+    splitBtn: true,
   },
   {
     id: 5,
     label: 'Rules',
     color: 'black',
-    endpoint: null,
+    endpoint: '/rules',
     disabled: false,
+    splitBtn: false,
   },
 ]);
 

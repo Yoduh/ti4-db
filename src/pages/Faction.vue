@@ -115,7 +115,7 @@
       <div v-for="leader in faction.leaders" :key="leader.id" class="q-mb-md">
         <div class="flex items-center">
           <strong style="text-transform: uppercase">{{ leader.type }}</strong
-          >: {{ leader.name }}<span v-if="leader.isOmega"> &Omega;</span>
+          >: {{ leader.name }} <span v-if="leader.isOmega"> &Omega;</span>
           <q-btn
             v-if="leader.notes && leader.notes.length > 0"
             @click="showNote(leader)"

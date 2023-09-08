@@ -1,5 +1,6 @@
 <template>
   <q-btn-dropdown
+    v-if="button.splitBtn"
     class="q-mr-md"
     split
     :to="`/${button.label.toLowerCase()}`"
@@ -57,6 +58,19 @@
       </q-item>
     </q-list>
   </q-btn-dropdown>
+  <q-btn
+    v-else
+    class="q-mr-md"
+    :class="{ 'q-px-lg': button.label === 'Rules' }"
+    split
+    :to="`/${button.label.toLowerCase()}`"
+    :color="button.color"
+    rounded
+    v-model="dropdown"
+    :auto-close="false"
+    :label="button.label"
+    :disable="button.disabled"
+  />
 </template>
 
 <script setup lang="ts">
