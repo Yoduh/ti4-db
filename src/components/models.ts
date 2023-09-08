@@ -41,7 +41,7 @@ export type Planet = {
   tech: string;
   features: Array<{ name: string }>;
   tile: number;
-  faction?: Faction;
+  faction?: Faction | string;
   notes?: Note[];
 };
 

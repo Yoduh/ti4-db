@@ -50,15 +50,14 @@ import { ref, watch } from 'vue';
 import { QTableProps } from 'quasar';
 import type { Planet } from './models';
 
-type FactionPlanets = { faction: string; planets: Planet[] }[];
-
 defineProps<{
-  factionSystems: FactionPlanets;
+  factionSystems: Planet[];
 }>();
 
 const factionPlanetTable = ref();
 const filter = ref('');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const sortedRows = ref<any[]>([]);
 watch(
   () => factionPlanetTable.value?.filteredSortedRows,
