@@ -11,7 +11,7 @@
     <template v-slot:top>
       <div class="flex column">
         <div class="row items-center">
-          <div>{{ unit.name }}</div>
+          <div class="text-h6">{{ unit.name }}</div>
           <q-btn
             v-if="unit.notes && unit.notes.length > 0"
             @click="$emit('showNote')"

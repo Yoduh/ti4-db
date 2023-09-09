@@ -17,8 +17,10 @@ declare module '@vue/runtime-core' {
 // for each client)
 const api = axios.create({ baseURL: process.env.API_URL });
 
+let pendingRequests = 0;
+
 api.interceptors.request.use((req) => {
-  console.log('show', req);
+  pendingRequests++;
   Loading.show();
   return req;
 });
@@ -27,13 +29,20 @@ api.interceptors.response.use(
   function (res) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    Loading.hide();
+
+    pendingRequests--;
+    if (pendingRequests === 0) {
+      Loading.hide();
+    }
     return res;
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    Loading.hide();
+    pendingRequests--;
+    if (pendingRequests === 0) {
+      Loading.hide();
+    }
     return Promise.reject(error);
   }
 );

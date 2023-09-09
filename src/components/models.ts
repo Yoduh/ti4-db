@@ -118,6 +118,7 @@ export type Unit = {
   updatedAt: string;
   notes?: Note[];
   unitAbility: Ability[];
+  faction?: Faction | string;
 };
 
 export type Note = {

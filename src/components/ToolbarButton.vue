@@ -61,7 +61,7 @@
   <q-btn
     v-else
     class="q-mr-md"
-    :class="{ 'q-px-lg': button.label === 'Rules' }"
+    :class="{ 'q-px-lg': button.label === 'Rules' || button.label === 'Units' }"
     split
     :to="`/${button.label.toLowerCase()}`"
     :color="button.color"

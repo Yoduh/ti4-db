@@ -74,6 +74,12 @@ const routes: RouteRecordRaw[] = [
         props: true,
       },
       {
+        path: '/units',
+        name: 'Units',
+        component: () => import('pages/Units.vue'),
+        props: true,
+      },
+      {
         path: '/technology/:techType',
         name: 'TechnologyType',
         component: () => import('pages/TechnologyType.vue'),
