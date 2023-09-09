@@ -1,6 +1,20 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <h2>Welcome to the TI4 Database</h2>
+  <q-page>
+    <q-img class="q-mt-lg" src="src/assets/banner.jpg" />
+    <div class="row justify-center">
+      <div class="col">
+        <h2 class="q-mb-sm text-center">Welcome to the TI4 Database</h2>
+        <div class="text-subtitle1 q-mt-none text-center text-italic">
+          Navigate with the above toolbar to find all the information you need
+          to play Twilight Imperium 4th Edition
+        </div>
+      </div>
+    </div>
+    <div class="row justify-center">
+      <div class="copyright text-caption text-center">
+        Twilight Imperium © Fantasy Flight Games. Not Affiliated.
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -34,3 +48,10 @@ const meta = ref<Meta>({
   totalCount: 1200,
 });
 </script>
+
+<style scoped>
+.copyright {
+  position: fixed;
+  bottom: 10px;
+}
+</style>

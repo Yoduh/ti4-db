@@ -83,7 +83,6 @@ const buttons = reactive<NavButton[]>([
     id: 3,
     label: 'Units',
     color: 'purple',
-    // endpoint: '/unit/type',
     disabled: false,
     splitBtn: false,
   },
