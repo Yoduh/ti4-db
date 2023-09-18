@@ -25,9 +25,14 @@
           <strong class="ref subheader-ref">{{ rule.ref }}</strong
           >{{ rule.text }}
         </h6>
-        <div v-if="rule.category === 'rule'">
+        <div v-else-if="rule.category === 'rule'">
           <strong class="ref rule-ref">{{ rule.ref }}</strong
           >{{ rule.text }}
+        </div>
+        <div v-else>
+          <ul class="q-my-sm">
+            <li>{{ rule.text }}</li>
+          </ul>
         </div>
         <div v-for="subrule in rule.children" :key="subrule.id">
           <ul class="q-my-sm">
