@@ -20,6 +20,12 @@
         :to="`/${button.label.toLowerCase()}/${listBtn.id ?? listBtn.name}`"
       >
         <q-item-section class="row">
+          <div
+            style="width: 35px"
+            class="flex justify-center items-center q-mr-md"
+          >
+            <img :src="getLogo(listBtn.id)" style="height: 30px" />
+          </div>
           <q-item-label>{{ listBtn.name }}</q-item-label>
         </q-item-section>
         <q-item-section v-if="isFactionList" side>
@@ -43,6 +49,13 @@
         }`"
       >
         <q-item-section class="row">
+          <div
+            v-if="isFactionList"
+            style="width: 35px"
+            class="flex justify-center items-center q-mr-md"
+          >
+            <img :src="getLogo(listBtn.id)" style="height: 30px" />
+          </div>
           <TI4Icon
             v-if="showTI4Icon(button, listBtn)"
             type="tech"
@@ -125,6 +138,10 @@ function removeBookmark(evt: PointerEvent, btn: ListButton, index: number) {
   );
   listBtns.value.splice(nextBtn, 0, btn);
   bookmarks.value.splice(index, 1);
+}
+
+function getLogo(id: string) {
+  return `${process.env.API_URL}/images/${id}/logo.webp`;
 }
 </script>
 

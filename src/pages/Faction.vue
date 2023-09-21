@@ -1,85 +1,145 @@
 <template>
   <div v-if="faction">
-    <h3>{{ faction.name }}</h3>
+    <div class="row items-center q-mt-lg">
+      <img
+        :src="getImage('logo', faction.id)"
+        class="q-mr-sm"
+        style="height: 100%"
+      />
+      <h3 class="q-ma-none">{{ faction.name }}</h3>
+    </div>
 
     <section class="q-mb-xl">
-      <h5 class="q-mb-sm">Commodities: {{ faction.commodities }}</h5>
+      <div
+        id="fuck"
+        class="row items-space-between"
+        :style="{ paddingLeft: 0 }"
+      >
+        <div class="col-12 col-md-6">
+          <h5 class="q-mb-sm">Commodities: {{ faction.commodities }}</h5>
 
-      <h5 class="q-mt-lg q-mb-sm">Starting Planets</h5>
-      <div class="row">
-        <div v-for="(planetTile, idx) in startingPlanets" :key="idx">
-          <div v-if="planetTile[0].tile === 2" class="q-px-md">
-            The Xxcha Kingdom
-          </div>
-          <div v-else-if="planetTile[0].tile === 14" class="q-px-md">
-            The Mentak Coalition
-          </div>
-          <div v-else-if="planetTile[0].tile === 58" class="q-px-md">
-            The Argent Flight
-          </div>
-          <div v-for="planet in planetTile" :key="planet.id" class="q-px-md">
-            <strong>
-              {{ planet.name }}
-              <span v-if="planet.resource || planet.influence"
-                >(<span class="resource">{{ planet.resource }}</span
-                >/<span class="influence">{{ planet.influence }}</span
-                >)</span
-              ></strong
-            >
-            <template v-if="planet.features">
-              <div
-                v-for="(feature, index) in planet.features"
-                :key="index"
-                class="text-caption"
-              >
-                contains {{ feature.name }}
+          <h5 class="q-mt-lg q-mb-sm">Starting Planets</h5>
+          <div class="row">
+            <div v-for="(planetTile, idx) in startingPlanets" :key="idx">
+              <div v-if="planetTile[0].tile === 2" class="q-px-md">
+                The Xxcha Kingdom
               </div>
-            </template>
+              <div v-else-if="planetTile[0].tile === 14" class="q-px-md">
+                The Mentak Coalition
+              </div>
+              <div v-else-if="planetTile[0].tile === 58" class="q-px-md">
+                The Argent Flight
+              </div>
+              <div
+                v-for="planet in planetTile"
+                :key="planet.id"
+                class="q-px-md"
+              >
+                <strong>
+                  {{ planet.name }}
+                  <span v-if="planet.resource || planet.influence"
+                    >(<span class="resource">{{ planet.resource }}</span
+                    >/<span class="influence">{{ planet.influence }}</span
+                    >)</span
+                  ></strong
+                >
+                <template v-if="planet.features">
+                  <div
+                    v-for="(feature, index) in planet.features"
+                    :key="index"
+                    class="text-caption"
+                  >
+                    contains {{ feature.name }}
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <h5 class="q-mt-lg q-mb-sm">Starting Technologies</h5>
+          <!-- Argent Flight -->
+          <div v-if="faction.id === 18" class="q-px-md">
+            Choose TWO of the following:
+          </div>
+          <div class="row">
+            <!-- Sardakk -->
+            <div v-if="faction.id === 13" class="row q-px-md">None</div>
+            <!-- Winnu -->
+            <div v-else-if="faction.id === 15" class="q-px-md">
+              Choose any 1 technology that has no prerequisites.
+            </div>
+            <!-- Council Keleres -->
+            <div v-else-if="faction.id === 25" class="q-px-md">
+              Choose 2 non-faction technologies owned by other players
+            </div>
+            <div
+              v-for="tech in faction.startingTech"
+              :key="tech.id"
+              class="q-px-md"
+            >
+              <TI4Icon
+                v-if="tech.techType !== 'Unit'"
+                type="tech"
+                :name="tech.techType"
+              />
+              {{ tech.name }}
+            </div>
+          </div>
+
+          <h5 class="q-mt-lg q-mb-sm">Starting Units</h5>
+          <div class="row">
+            <div
+              v-for="unit in faction.startingUnits"
+              :key="unit.id"
+              class="q-px-md"
+            >
+              {{ unit.starting_units.quantity }} {{ unit.name }}
+            </div>
           </div>
         </div>
-      </div>
-
-      <h5 class="q-mt-lg q-mb-sm">Starting Technologies</h5>
-      <!-- Argent Flight -->
-      <div v-if="faction.id === 18" class="q-px-md">
-        Choose TWO of the following:
-      </div>
-      <div class="row">
-        <!-- Sardakk -->
-        <div v-if="faction.id === 13" class="row q-px-md">None</div>
-        <!-- Winnu -->
-        <div v-else-if="faction.id === 15" class="q-px-md">
-          Choose any 1 technology that has no prerequisites.
-        </div>
-        <!-- Council Keleres -->
-        <div v-else-if="faction.id === 25" class="q-px-md">
-          Choose 2 non-faction technologies owned by other players
-        </div>
-        <div
-          v-for="tech in faction.startingTech"
-          :key="tech.id"
-          class="q-px-md"
-        >
-          <TI4Icon
-            v-if="tech.techType !== 'Unit'"
-            type="tech"
-            :name="tech.techType"
-          />
-          {{ tech.name }}
-        </div>
-      </div>
-
-      <h5 class="q-mt-lg q-mb-sm">Starting Units</h5>
-      <div class="row">
-        <div
-          v-for="unit in faction.startingUnits"
-          :key="unit.id"
-          class="q-px-md"
-        >
-          {{ unit.starting_units.quantity }} {{ unit.name }}
+        <div class="col-12 col-md-6 q-mt-lg">
+          <q-carousel
+            v-model="slide"
+            transition-prev="slide-right"
+            transition-next="slide-left"
+            swipeable
+            animated
+            control-color="white"
+            navigation
+            padding
+            arrows
+            height="100%"
+          >
+            <q-carousel-slide name="front">
+              <q-img
+                :src="getImage('sheetFront', faction.id)"
+                @click="openImageDialog('sheetFront', faction.id)"
+              />
+            </q-carousel-slide>
+            <q-carousel-slide name="back">
+              <q-img
+                :src="getImage('sheetBack', faction.id)"
+                @click="openImageDialog('sheetBack', faction.id)"
+              />
+            </q-carousel-slide>
+            <q-carousel-slide name="components">
+              <q-img
+                :src="getImage('components', faction.id)"
+                @click="openImageDialog('components', faction.id)"
+              />
+            </q-carousel-slide>
+          </q-carousel>
         </div>
       </div>
     </section>
+    <q-dialog v-model="imageDialog" full-height full-width>
+      <q-img
+        :src="carouselImage"
+        fit="contain"
+        style="overflow-y: hidden"
+        @click="imageDialog = false"
+      />
+    </q-dialog>
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Abilities</h5>
@@ -88,7 +148,7 @@
         :key="ability.id"
         class="q-mb-md"
       >
-        <div class="flex items-center">
+        <div class="flex items-center text-h6">
           <strong
             >{{ ability.name
             }}<span v-if="ability.isOmega"> &Omega;</span></strong
@@ -116,7 +176,7 @@
         :key="promissory.id"
         class="q-mb-md"
       >
-        <div class="flex items-center">
+        <div class="flex items-center text-h6">
           <strong
             >{{ promissory.name
             }}<span v-if="promissory.isOmega"> &Omega;</span></strong
@@ -140,9 +200,10 @@
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Leaders</h5>
       <div v-for="leader in faction.leaders" :key="leader.id" class="q-mb-md">
-        <div class="flex items-center">
+        <div class="flex items-center text-h6">
           <strong style="text-transform: uppercase">{{ leader.type }}</strong
-          >: {{ leader.name }} <span v-if="leader.isOmega"> &Omega;</span>
+          >: {{ leader.name
+          }}<span v-if="leader.isOmega" style="white-space: pre"> &Omega;</span>
           <q-btn
             v-if="leader.notes && leader.notes.length > 0"
             @click="showNote(leader)"
@@ -154,6 +215,7 @@
             icon="help_outline"
           />
         </div>
+        <img :src="getImage(leader.type.toLowerCase(), faction.id)" />
         <div>UNLOCK: {{ leader.criteria }}</div>
         <div class="q-mb-sm">
           {{ leader.effect }}
@@ -177,7 +239,7 @@
       <h5 class="q-mt-lg q-mb-sm">Faction Technology</h5>
       <div v-for="tech in faction.factionTech" :key="tech.id" class="q-mb-md">
         <div v-if="tech.techType !== 'Unit'">
-          <div class="row items-center">
+          <div class="row items-center text-h6">
             <TI4Icon
               v-if="tech.techType !== 'Unit'"
               type="tech"
@@ -247,7 +309,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, onUpdated } from 'vue';
 import type { Faction, Planet, Unit, Note } from 'components/models';
 import { api } from '@/boot/axios';
 import TI4Icon from 'components/ti4Icon.vue';
@@ -295,6 +357,33 @@ function showNote(item: Partial<{ name: string; notes: Note[] }>) {
   noteName.value = item.name as string;
   noteTexts.value = item.notes;
   noteDialog.value = true;
+}
+
+const imageDialog = ref(false);
+const slide = ref('front');
+let agent = 1;
+let hero = 1;
+function getImage(type: string, id: number) {
+  const ext =
+    type.startsWith('sheet') || type === 'components' ? '.jpg' : '.webp';
+  // nomad
+  if (id === 22 && type === 'agent') {
+    type = type + agent++;
+  }
+  // keleres
+  else if (id === 25 && type === 'hero') {
+    type = type + hero++;
+  }
+  return `${process.env.API_URL}/images/${id}/${type + ext}`;
+}
+onUpdated(() => {
+  agent = 1;
+  hero = 1;
+});
+const carouselImage = ref('');
+function openImageDialog(type: string, id: number) {
+  carouselImage.value = `${process.env.API_URL}/images/${id}/${type}.jpg`;
+  imageDialog.value = true;
 }
 
 // Dammit Keleres, only for you...
