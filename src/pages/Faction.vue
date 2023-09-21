@@ -321,6 +321,7 @@ const props = defineProps<{
 }>();
 
 const faction = ref<Faction | undefined>(undefined);
+const slide = ref('front');
 
 watch(
   () => props.id,
@@ -328,6 +329,7 @@ watch(
     api.get(`/faction/${newId}`).then((res) => {
       faction.value = res.data;
     });
+    slide.value = 'front';
   },
   { immediate: true }
 );
@@ -360,7 +362,6 @@ function showNote(item: Partial<{ name: string; notes: Note[] }>) {
 }
 
 const imageDialog = ref(false);
-const slide = ref('front');
 let agent = 1;
 let hero = 1;
 function getImage(type: string, id: number) {
