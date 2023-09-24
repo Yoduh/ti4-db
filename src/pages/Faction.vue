@@ -132,12 +132,11 @@
         </div>
       </div>
     </section>
-    <q-dialog v-model="imageDialog" full-height full-width>
-      <q-img
+    <q-dialog v-model="imageDialog">
+      <img
         :src="carouselImage"
-        fit="contain"
-        style="overflow-y: hidden"
-        @click="imageDialog = false"
+        style="overflow-y: hidden; height: 100%; object-fit: contain"
+        :v-close-popup="false"
       />
     </q-dialog>
 
