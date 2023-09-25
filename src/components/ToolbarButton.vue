@@ -106,7 +106,9 @@ const props = defineProps<{
 }>();
 
 const isFactionList = ref(false);
+const bookmarks = ref<ListButton[]>([]);
 const listBtns = ref<ListButton[]>([]);
+
 if (props.button.endpoint) {
   api.get(`${props.button.endpoint}`).then((res) => {
     listBtns.value = res.data;
@@ -114,6 +116,8 @@ if (props.button.endpoint) {
 }
 if (props.button.endpoint === '/faction/names') {
   isFactionList.value = true;
+  const loadedBookmarks = localStorage.getItem('bookmarks');
+  if (loadedBookmarks) bookmarks.value = JSON.parse(loadedBookmarks);
 }
 
 function showTI4Icon(button: NavButton, listBtn: ListButton) {
@@ -122,13 +126,13 @@ function showTI4Icon(button: NavButton, listBtn: ListButton) {
   );
 }
 
-const bookmarks = ref<ListButton[]>([]);
 function addBookmark(evt: PointerEvent, btn: ListButton, index: number) {
   evt.stopPropagation();
   evt.preventDefault();
   bookmarks.value.push(btn);
   listBtns.value.splice(index, 1);
   qicon.value[index].$el.blur();
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarks.value));
 }
 function removeBookmark(evt: PointerEvent, btn: ListButton, index: number) {
   evt.stopPropagation();
@@ -138,6 +142,7 @@ function removeBookmark(evt: PointerEvent, btn: ListButton, index: number) {
   );
   listBtns.value.splice(nextBtn, 0, btn);
   bookmarks.value.splice(index, 1);
+  localStorage.setItem('bookmarks', JSON.stringify(bookmarks.value));
 }
 
 function getLogo(id: string) {

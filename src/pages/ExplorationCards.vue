@@ -12,15 +12,18 @@
       </template>
     </q-input>
     <h3>Exploration Cards</h3>
-    <q-btn-toggle
-      v-model="traitFilter"
-      :options="traits"
-      rounded
-      push
-      clearable
-      :toggle-color="activeColor"
-      toggle-text-color="white"
-    />
+    <div class="q-ml-sm q-mb-xs text-caption">Filters:</div>
+    <q-btn-group rounded glossy>
+      <q-btn
+        v-for="(button, index) in traitToggles"
+        :key="index"
+        :color="button.color"
+        :label="button.label"
+        rounded
+        glossy
+        @click="toggle(button)"
+      ></q-btn>
+    </q-btn-group>
     <div v-for="card in filteredCards" :key="card.id" class="q-mb-xl">
       <h5 class="q-mb-none">
         <TI4Icon type="trait" :name="card.trait" /><span class="q-ml-sm">{{
@@ -69,28 +72,39 @@ import type { ExplorationCard, Note } from 'components/models';
 import NoteDialog from 'components/noteDialog.vue';
 import TI4Icon from '@/components/ti4Icon.vue';
 
-const traits = ref([
+type toggleBtn = {
+  label: string;
+  trait: string;
+  color: string;
+  onColor: string;
+};
+const traitToggles = ref([
   {
     label: 'Industrial',
-    value: 'industrial',
+    trait: 'industrial',
     color: 'green-10',
+    onColor: 'green-10',
   },
   {
     label: 'Hazardous',
-    value: 'hazardous',
+    trait: 'hazardous',
     color: 'red-10',
+    onColor: 'red-10',
   },
   {
     label: 'Cultural',
-    value: 'cultural',
+    trait: 'cultural',
     color: 'blue-10',
+    onColor: 'blue-10',
   },
   {
     label: 'Frontier',
-    value: 'frontier',
+    trait: 'frontier',
     color: 'grey-10',
+    onColor: 'grey-10',
   },
 ]);
+const offColor = 'blue-grey-10';
 
 const cards = ref<ExplorationCard[]>([]);
 api.get('/components/exploration').then((res) => {
@@ -104,35 +118,31 @@ const filteredCards = computed<ExplorationCard[]>(() => {
   return cards.value.filter(
     (a) =>
       a.name.toLowerCase().includes(search.value.toLowerCase()) &&
-      (traitFilter.value === null
-        ? true
-        : a.trait.toLowerCase() === traitFilter.value)
+      activeFilters.value.find((f) => f === a.trait.toLowerCase()) !== undefined
   );
 });
 
-const activeColor = computed(() => {
-  if (traitFilter.value) {
-    switch (traitFilter.value) {
-      case 'hazardous':
-        return 'red';
-      case 'industrial':
-        return 'green';
-      case 'cultural':
-        return 'blue';
-      default:
-        return 'grey';
-    }
-  } else return undefined;
-});
+const activeFilters = ref<string[]>([
+  'industrial',
+  'hazardous',
+  'cultural',
+  'frontier',
+]);
 
-// function filterCards() {
-//   filteredCards.value = cards.value;
-//   if (search.value === '') return;
-
-//   filteredCards.value = filteredCards.value.filter((a) =>
-//     a.name.toLowerCase().includes(search.value.toLocaleLowerCase())
-//   );
-// }
+function toggle(option: toggleBtn) {
+  if (
+    activeFilters.value.length === 1 &&
+    activeFilters.value[0] === option.trait
+  ) {
+    activeFilters.value = ['industrial', 'hazardous', 'cultural', 'frontier'];
+    traitToggles.value.forEach((t) => (t.color = t.onColor));
+  } else {
+    activeFilters.value = [option.trait];
+    traitToggles.value.forEach((t) =>
+      t.trait === option.trait ? (t.color = t.onColor) : (t.color = offColor)
+    );
+  }
+}
 
 function replaceCrown(effect: string) {
   return effect.split('CROWN');
