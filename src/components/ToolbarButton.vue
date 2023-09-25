@@ -106,18 +106,28 @@ const props = defineProps<{
 }>();
 
 const isFactionList = ref(false);
+console.log('created');
 const bookmarks = ref<ListButton[]>([]);
 const listBtns = ref<ListButton[]>([]);
 
 if (props.button.endpoint) {
   api.get(`${props.button.endpoint}`).then((res) => {
     listBtns.value = res.data;
+    if (isFactionList.value) {
+      const loadedBookmarks = localStorage.getItem('bookmarks');
+      if (loadedBookmarks) {
+        bookmarks.value = JSON.parse(loadedBookmarks);
+        if (listBtns.value.length > 0) {
+          listBtns.value = listBtns.value.filter(
+            (btn) => !bookmarks.value.find((bk) => bk.id === btn.id)
+          );
+        }
+      }
+    }
   });
 }
 if (props.button.endpoint === '/faction/names') {
   isFactionList.value = true;
-  const loadedBookmarks = localStorage.getItem('bookmarks');
-  if (loadedBookmarks) bookmarks.value = JSON.parse(loadedBookmarks);
 }
 
 function showTI4Icon(button: NavButton, listBtn: ListButton) {
