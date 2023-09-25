@@ -122,7 +122,7 @@
                 @click="openImageDialog('sheetBack', faction.id)"
               />
             </q-carousel-slide>
-            <q-carousel-slide name="components">
+            <q-carousel-slide name="components" v-if="faction.id !== 25">
               <q-img
                 :src="getImage('components', faction.id)"
                 @click="openImageDialog('components', faction.id)"
