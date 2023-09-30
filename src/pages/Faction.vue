@@ -464,7 +464,7 @@ const keleresNote: { name: string; notes: Note[] } = {
     {
       id: 10,
       parentNote: null,
-      text: "The Ul player's Terraform faction promissory note and the Nanoforge relic may be attached to Custodia Vigilia.",
+      text: "The Ul player's Terraform faction promissory note may be attached to Custodia Vigilia.",
       children: [
         {
           id: 104,

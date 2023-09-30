@@ -112,7 +112,6 @@ api.get('/components/exploration').then((res) => {
 });
 
 const search = ref('');
-const traitFilter = ref(null);
 
 const filteredCards = computed<ExplorationCard[]>(() => {
   return cards.value.filter(
