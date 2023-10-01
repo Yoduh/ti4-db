@@ -21,6 +21,23 @@
         </template>
       </q-input>
     </template>
+    <template v-slot:body-cell-tile="props">
+      <q-td :props="props">
+        <div class="flex items-center">
+          <div class="my-table-details">
+            {{ ('0' + props.row.tile).slice(-2) }}
+          </div>
+          <q-btn
+            size="md"
+            class="q-ml-xs"
+            round
+            flat
+            @click="openImageDialog(props.row.tile, props.row.name)"
+            icon="image"
+          />
+        </div>
+      </q-td>
+    </template>
     <template v-slot:body-cell-features="props">
       <q-td :props="props">
         <div v-for="(feature, idx) in props.row.features" :key="idx">
@@ -43,6 +60,14 @@
       </q-td>
     </template>
   </q-table>
+
+  <q-dialog v-model="imageDialog">
+    <img
+      :src="dialogImage"
+      style="overflow-y: hidden; height: 100%; object-fit: contain"
+      :v-close-popup="false"
+    />
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -91,6 +116,13 @@ const planetColumns = ref<QTableProps['columns']>([
     sortable: true,
   },
   {
+    name: 'tile',
+    label: 'Tile',
+    field: 'tile',
+    align: 'left',
+    sortable: true,
+  },
+  {
     name: 'resources',
     label: 'Resources',
     field: 'resource',
@@ -117,6 +149,16 @@ const planetColumns = ref<QTableProps['columns']>([
     sortable: true,
   },
 ]);
+
+const imageDialog = ref(false);
+const dialogImage = ref('');
+function openImageDialog(tile: number | string, name: string) {
+  if (!tile && name === 'Mirage') {
+    tile = 'mirage';
+  }
+  dialogImage.value = `${process.env.API_URL}/images/systems/${tile}.png`;
+  imageDialog.value = true;
+}
 </script>
 
 <style scoped>

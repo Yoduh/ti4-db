@@ -106,7 +106,6 @@ const props = defineProps<{
 }>();
 
 const isFactionList = ref(false);
-console.log('created');
 const bookmarks = ref<ListButton[]>([]);
 const listBtns = ref<ListButton[]>([]);
 

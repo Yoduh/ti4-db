@@ -55,7 +55,9 @@
             />
           </div>
           <div v-else>
-            <div>{{ tech.description }}</div>
+            <div style="white-space: pre-wrap">
+              {{ tech.description }}
+            </div>
             <div class="text-italic">
               Pre-requisites: <span v-if="!tech.prereqs">None</span>
               <span v-else v-for="(prereq, idx) in tech.prereqs" :key="idx">

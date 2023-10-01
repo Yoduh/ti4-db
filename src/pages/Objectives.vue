@@ -77,7 +77,6 @@ api.get('/objective').then((res) => {
 });
 const search = ref('');
 const filteredObjectives = computed<Objective[]>(() => {
-  console.log('computing');
   return objectives.value.filter(
     (o) =>
       o.name.toLowerCase().includes(search.value.toLocaleLowerCase()) &&

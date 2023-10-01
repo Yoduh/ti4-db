@@ -33,7 +33,7 @@
     </q-drawer>
     <q-page-container>
       <div class="row justify-center">
-        <div class="col col-md-8 q-px-md">
+        <div class="col col-md-8 col-lg-7 q-px-md">
           <router-view />
         </div>
       </div>

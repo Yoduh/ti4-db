@@ -216,7 +216,7 @@
         </div>
         <img :src="getImage(leader.type.toLowerCase(), faction.id)" />
         <div>UNLOCK: {{ leader.criteria }}</div>
-        <div class="q-mb-sm">
+        <div class="q-mb-sm" style="white-space: pre-wrap">
           {{ leader.effect }}
         </div>
       </div>
