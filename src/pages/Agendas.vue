@@ -28,13 +28,20 @@
         />
       </h5>
 
-      <div>{{ agenda.type.toUpperCase() }}</div>
+      <div class="text-bold text-agenda-title">
+        {{ agenda.type.toUpperCase() }}
+      </div>
       <div v-if="agenda.elect">
         <strong>Elect {{ agenda.elect }}</strong>
       </div>
       <div v-if="agenda.effect">{{ agenda.effect }}</div>
-      <div v-if="agenda.forOption">FOR: {{ agenda.forOption }}</div>
-      <div v-if="agenda.againstOption">Against: {{ agenda.againstOption }}</div>
+      <div v-if="agenda.forOption">
+        <span class="text-bold text-italic">FOR:</span> {{ agenda.forOption }}
+      </div>
+      <div v-if="agenda.againstOption">
+        <span class="text-bold text-italic">AGAINST:</span>
+        {{ agenda.againstOption }}
+      </div>
     </div>
   </div>
   <NoteDialog
@@ -76,4 +83,8 @@ function showNote(item: Agenda) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-agenda-title {
+  color: #f3eb61 !important;
+}
+</style>
