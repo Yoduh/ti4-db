@@ -10,11 +10,7 @@
     </div>
 
     <section class="q-mb-xl">
-      <div
-        id="fuck"
-        class="row items-space-between"
-        :style="{ paddingLeft: 0 }"
-      >
+      <div class="row items-space-between" :style="{ paddingLeft: 0 }">
         <div class="col-12 col-md-6">
           <h5 class="q-mb-sm">Commodities: {{ faction.commodities }}</h5>
 

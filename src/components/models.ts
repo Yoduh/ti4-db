@@ -119,6 +119,7 @@ export type Unit = {
   notes?: Note[];
   unitAbility: Ability[];
   faction?: Faction | string;
+  isOmega: boolean;
 };
 
 export type Note = {
