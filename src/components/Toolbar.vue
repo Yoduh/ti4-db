@@ -13,22 +13,21 @@
       ><strong>TI4 DB</strong></span
     >
     <div class="gt-sm">
-      <ToolbarButton
-        v-for="button in buttons"
-        :key="button.id"
-        :button="button"
-      />
+      <FactionButtons v-for="button in factionButtons" :key="button.id" :button="button" />
+      <ToolbarButton v-for="button in buttons" :key="button.id" :button="button" />
     </div>
   </q-toolbar>
 </template>
 
 <script setup lang="ts">
-import ToolbarButton from 'components/ToolbarButton.vue';
+import FactionButtons from '@/components/FactionButtons.vue';
+import ToolbarButton from '@/components/ToolbarButton.vue';
 import type { NavButton } from './models';
 import { useRouter } from 'vue-router';
 
 defineProps<{
   buttons: NavButton[];
+  factionButtons: NavButton[];
 }>();
 
 const router = useRouter();

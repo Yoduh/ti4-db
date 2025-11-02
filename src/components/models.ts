@@ -29,6 +29,7 @@ export type Faction = {
   startingTech: Array<Technology>;
   startingUnits: Array<StartingUnit>;
   units: Array<Unit>;
+  breakthroughs: Array<Breakthrough>;
 };
 
 export type Planet = {
@@ -76,6 +77,7 @@ export type Leader = {
   effectName: string;
   omega: string;
   isOmega: boolean;
+  isDoubleOmega: boolean;
   leaderId: number;
   notes?: Note[];
 };
@@ -88,6 +90,7 @@ export type Technology = {
   description: string;
   omega: string;
   isOmega: boolean;
+  isDoubleOmega: boolean;
   prereqs: [
     {
       quantity: number;
@@ -209,5 +212,16 @@ export type Relic = {
   name: string;
   effect: string;
   codex: boolean;
+  notes?: Note[];
+};
+
+export type Breakthrough = {
+  id: number;
+  synergy1: string;
+  synergy2: string;
+  name: string;
+  description: string;
+  factionId: number;
+  unit: Unit;
   notes?: Note[];
 };

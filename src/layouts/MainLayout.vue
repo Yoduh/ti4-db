@@ -1,7 +1,11 @@
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-header elevated>
-      <Toolbar @toggleLeftDrawer="toggleLeftDrawer" :buttons="buttons" />
+      <Toolbar
+        @toggleLeftDrawer="toggleLeftDrawer"
+        :buttons="buttons"
+        :factionButtons="factionButtons"
+      />
     </q-header>
     <q-drawer
       ref="drawerTarget"
@@ -14,7 +18,7 @@
     >
       <q-scroll-area class="fit">
         <q-list>
-          <template v-for="(button, index) in buttons" :key="index">
+          <template v-for="(button, index) in mobileButtons" :key="index">
             <q-item
               clickable
               @click="drawer = false"
@@ -55,7 +59,7 @@ onClickOutside(drawerTarget, (evt: PointerEvent) => {
   }
 });
 
-const buttons = reactive<NavButton[]>([
+const factionButtons = reactive<NavButton[]>([
   {
     id: 0,
     label: 'Factions',
@@ -64,6 +68,8 @@ const buttons = reactive<NavButton[]>([
     disabled: false,
     splitBtn: true,
   },
+]);
+const buttons = reactive<NavButton[]>([
   {
     id: 1,
     label: 'Technology',
@@ -102,6 +108,7 @@ const buttons = reactive<NavButton[]>([
     splitBtn: false,
   },
 ]);
+const mobileButtons = [...factionButtons, ...buttons];
 
 function toggleLeftDrawer() {
   drawer.value = !drawer.value;

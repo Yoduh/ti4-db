@@ -8,13 +8,7 @@
     class="planetTable q-mb-xl"
   >
     <template v-slot:top-right>
-      <q-input
-        borderless
-        dense
-        debounce="300"
-        v-model="filter"
-        placeholder="Search"
-      >
+      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -34,31 +28,46 @@
             @click="openImageDialog(props.row.tile, props.row.name)"
             icon="image"
           />
+          <div class="flex items-center" v-if="props.row.tile?.startsWith('Fracture')">
+            <div class="my-table-details">{{ props.row.tile.replace('A', 'B') }}</div>
+            <q-btn
+              size="md"
+              class="q-ml-xs"
+              round
+              flat
+              @click="openImageDialog(props.row.tile.replace('A', 'B'), props.row.name)"
+              icon="image"
+            />
+          </div>
         </div>
       </q-td>
     </template>
     <template v-slot:body-cell-trait="props">
       <q-td :props="props">
-        <div>
-          <Ti4Icon
-            v-if="props.row.trait"
-            type="trait"
-            :name="props.row.trait"
-          />
-        </div>
-        <div class="my-table-details">
-          {{ props.row.trait }}
-        </div>
+        <template v-if="props.row.trait">
+          <div v-for="(trait, i) in props.row.trait" :key="i">
+            <div>
+              <Ti4Icon type="trait" :name="trait" />
+            </div>
+            <div class="my-table-details">
+              {{ trait }}
+            </div>
+          </div>
+        </template>
       </q-td>
     </template>
     <template v-slot:body-cell-tech="props">
       <q-td :props="props">
-        <div>
-          <Ti4Icon v-if="props.row.tech" type="tech" :name="props.row.tech" />
-        </div>
-        <div class="my-table-details">
-          {{ props.row.tech }}
-        </div>
+        <template v-if="props.row.tech">
+          <div v-for="(tech, i) in props.row.tech" :key="i">
+            <div>
+              <Ti4Icon v-if="tech" type="tech" :name="tech" />
+            </div>
+            <div class="my-table-details">
+              {{ tech }}
+            </div>
+          </div>
+        </template>
       </q-td>
     </template>
     <template v-slot:body-cell-features="props">
@@ -160,6 +169,7 @@ const planetColumns = ref<QTableProps['columns']>([
 const imageDialog = ref(false);
 const dialogImage = ref('');
 function openImageDialog(tile: number | string, name: string) {
+  console.log(tile);
   if (!tile && name === 'Mirage') {
     tile = 'mirage';
   } else if (!tile && name.startsWith('Custodia')) {

@@ -1,11 +1,7 @@
 <template>
   <div v-if="faction">
     <div class="row items-center q-mt-lg">
-      <img
-        :src="getImage('logo', faction.id)"
-        class="q-mr-sm"
-        style="height: 100%"
-      />
+      <img :src="getImage('logo', faction.id)" class="q-mr-sm" style="height: 100%" />
       <h3 class="q-ma-none">{{ faction.name }}</h3>
     </div>
 
@@ -14,23 +10,17 @@
         <div class="col-12 col-md-6">
           <h5 class="q-mb-sm">Commodities: {{ faction.commodities }}</h5>
 
-          <h5 class="q-mt-lg q-mb-sm">Starting Planets</h5>
+          <h5 class="q-mt-lg q-mb-sm">Home Planets</h5>
           <div class="row">
             <div v-for="(planetTile, idx) in startingPlanets" :key="idx">
-              <div v-if="planetTile[0].tile === 2" class="q-px-md">
-                The Xxcha Kingdom
-              </div>
-              <div v-else-if="planetTile[0].tile === 14" class="q-px-md">
+              <div v-if="Number(planetTile[0].tile) === 2" class="q-px-md">The Xxcha Kingdom</div>
+              <div v-else-if="Number(planetTile[0].tile) === 14" class="q-px-md">
                 The Mentak Coalition
               </div>
-              <div v-else-if="planetTile[0].tile === 58" class="q-px-md">
+              <div v-else-if="Number(planetTile[0].tile) === 58" class="q-px-md">
                 The Argent Flight
               </div>
-              <div
-                v-for="planet in planetTile"
-                :key="planet.id"
-                class="q-px-md"
-              >
+              <div v-for="planet in planetTile" :key="planet.id" class="q-px-md">
                 <strong>
                   {{ planet.name }}
                   <span v-if="planet.resource || planet.influence"
@@ -54,43 +44,27 @@
 
           <h5 class="q-mt-lg q-mb-sm">Starting Technologies</h5>
           <!-- Argent Flight -->
-          <div v-if="faction.id === 18" class="q-px-md">
-            Choose TWO of the following:
-          </div>
-          <div class="row">
-            <!-- Sardakk -->
-            <div v-if="faction.id === 13" class="row q-px-md">None</div>
-            <!-- Winnu -->
-            <div v-else-if="faction.id === 15" class="q-px-md">
-              Choose any 1 technology that has no prerequisites.
-            </div>
-            <!-- Council Keleres -->
-            <div v-else-if="faction.id === 25" class="q-px-md">
-              Choose 2 non-faction technologies owned by other players
-            </div>
-            <div
-              v-for="tech in faction.startingTech"
-              :key="tech.id"
-              class="q-px-md"
-            >
+          <div v-if="faction.id === 18" class="q-px-md">Choose TWO of the following:</div>
+          <div class="row" v-if="faction.startingTech.length > 0">
+            <div v-for="tech in faction.startingTech" :key="tech.id" class="q-px-md">
               <TI4Icon
-                v-if="tech.techType !== 'Unit'"
+                v-if="tech.techType !== 'Unit' && tech.techType !== 'Starting'"
                 type="tech"
                 :name="tech.techType"
               />
               {{ tech.name }}
             </div>
           </div>
+          <div v-else class="q-px-md">N/A</div>
 
           <h5 class="q-mt-lg q-mb-sm">Starting Units</h5>
           <div class="row">
-            <div
-              v-for="unit in faction.startingUnits"
-              :key="unit.id"
-              class="q-px-md"
-            >
-              {{ unit.starting_units.quantity }} {{ unit.name }}
-            </div>
+            <template v-if="faction.startingUnits.length > 0">
+              <div v-for="unit in faction.startingUnits" :key="unit.id" class="q-px-md">
+                {{ unit.starting_units.quantity }} {{ unit.name }}
+              </div>
+            </template>
+            <div else class="q-px-md">N/A</div>
           </div>
         </div>
         <div class="col-12 col-md-6 q-mt-lg">
@@ -138,16 +112,10 @@
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Abilities</h5>
-      <div
-        v-for="ability in faction.abilities"
-        :key="ability.id"
-        class="q-mb-md"
-      >
+      <div v-for="ability in faction.abilities" :key="ability.id" class="q-mb-md">
         <div class="flex items-center text-h6">
-          <strong
-            >{{ ability.name
-            }}<span v-if="ability.isOmega"> &Omega;</span></strong
-          ><q-btn
+          <strong>{{ ability.name }}<span v-if="ability.isOmega"> &Omega;</span></strong>
+          <q-btn
             v-if="ability.notes && ability.notes.length > 0"
             @click="showNote(ability)"
             color="amber-4"
@@ -166,15 +134,9 @@
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Promissory Note</h5>
-      <div
-        v-for="promissory in faction.promissory_notes"
-        :key="promissory.id"
-        class="q-mb-md"
-      >
+      <div v-for="promissory in faction.promissory_notes" :key="promissory.id" class="q-mb-md">
         <div class="flex items-center text-h6">
-          <strong
-            >{{ promissory.name
-            }}<span v-if="promissory.isOmega"> &Omega;</span></strong
+          <strong>{{ promissory.name }}<span v-if="promissory.isOmega"> &Omega;</span></strong
           ><q-btn
             v-if="promissory.notes && promissory.notes.length > 0"
             @click="showNote(promissory)"
@@ -193,55 +155,13 @@
     </section>
 
     <section class="q-mb-xl">
-      <h5 class="q-mt-lg q-mb-sm">Faction Leaders</h5>
-      <div v-for="leader in faction.leaders" :key="leader.id" class="q-mb-md">
-        <div class="flex items-center text-h6">
-          <strong style="text-transform: uppercase">{{ leader.type }}</strong
-          >: {{ leader.name
-          }}<span v-if="leader.isOmega" style="white-space: pre"> &Omega;</span>
-          <q-btn
-            v-if="leader.notes && leader.notes.length > 0"
-            @click="showNote(leader)"
-            color="amber-4"
-            round
-            dense
-            size="12px"
-            flat
-            icon="help_outline"
-          />
-        </div>
-        <img :src="getImage(leader.type.toLowerCase(), faction.id)" />
-        <div>UNLOCK: {{ leader.criteria }}</div>
-        <div class="q-mb-sm" style="white-space: pre-wrap">
-          {{ leader.effect }}
-        </div>
-      </div>
-    </section>
-
-    <section class="q-mb-xl">
-      <h5 class="q-mt-lg q-mb-sm">Faction Units</h5>
-      <div v-for="unit in faction.units" :key="unit.id" class="q-mb-lg row">
-        <UnitTable
-          :unit="unit"
-          :prereqs="getUnitPrereqs(unit)"
-          class="col col-sm-9 col-md-8 col-lg-5"
-          @showNote="showNote(unit)"
-        />
-      </div>
-    </section>
-
-    <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Technology</h5>
       <div v-for="tech in faction.factionTech" :key="tech.id" class="q-mb-md">
         <div v-if="tech.techType !== 'Unit'">
           <div class="row items-center text-h6">
-            <TI4Icon
-              v-if="tech.techType !== 'Unit'"
-              type="tech"
-              :name="tech.techType"
-            /><strong
-              >{{ tech.name }}<span v-if="tech.isOmega"> &Omega;</span></strong
-            ><q-btn
+            <TI4Icon v-if="tech.techType !== 'Unit'" type="tech" :name="tech.techType" />
+            <strong>{{ tech.name }}<span v-if="tech.isOmega"> &Omega;</span></strong>
+            <q-btn
               v-if="tech.notes && tech.notes.length > 0"
               @click="showNote(tech)"
               color="amber-4"
@@ -260,9 +180,7 @@
             <span v-for="(prereq, idx) in tech.prereqs" :key="idx">
               <TI4Icon
                 type="tech"
-                :name="
-                  tech.techType === 'Unit' ? prereq.techType : tech.techType
-                "
+                :name="tech.techType === 'Unit' ? prereq.techType : tech.techType"
                 :quantity="prereq?.quantity"
               />
             </span>
@@ -271,14 +189,79 @@
       </div>
     </section>
 
+    <section class="q-mb-xl">
+      <h5 class="q-mt-lg q-mb-sm">Breakthrough</h5>
+      <div v-for="breakthrough in faction.breakthroughs" :key="breakthrough.id" class="q-mb-md">
+        <div class="row items-center text-h6">
+          <strong>{{ breakthrough.name }}</strong>
+          <q-btn
+            v-if="breakthrough.notes && breakthrough.notes.length > 0"
+            @click="showNote(breakthrough)"
+            color="amber-4"
+            round
+            dense
+            size="12px"
+            flat
+            icon="help_outline"
+          />
+        </div>
+        <div class="row items-center">
+          <TI4Icon v-if="breakthrough.synergy1" type="tech" :name="breakthrough.synergy1" />
+          <div v-else class="text-h6">N/A</div>
+          <q-icon name="sync_alt" size="lg" class="q-mx-sm" />
+          <TI4Icon v-if="breakthrough.synergy1" type="tech" :name="breakthrough.synergy2" />
+          <div v-else class="text-h6">N/A</div>
+        </div>
+        <div class="q-mb-sm">
+          {{ breakthrough.description }}
+        </div>
+        <div v-if="breakthrough.unit" class="row q-mt-lg">
+          <div class="col col-sm-9 col-md-8 col-lg-5">
+            <strong class="text-h6">{{ breakthrough.name }} (Flipped)</strong>
+            <div class="row">
+              <TI4Icon v-if="breakthrough.synergy1" type="tech" :name="breakthrough.synergy1" />
+              <div v-else class="text-h6">N/A</div>
+              <q-icon name="sync_alt" size="lg" class="q-mx-sm" />
+              <TI4Icon v-if="breakthrough.synergy1" type="tech" :name="breakthrough.synergy2" />
+              <div v-else class="text-h6">N/A</div>
+            </div>
+            <UnitTable
+              :unit="breakthrough.unit"
+              prereqs="Breakthrough"
+              @showNote="showNote(breakthrough.unit)"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="q-mb-xl">
+      <h5 class="q-mt-lg q-mb-sm">Faction Leaders</h5>
+      <div class="row">
+        <div class="col col-sm-9 col-lg-8">
+          <FactionLeaderPanel :leaders="faction.leaders" @noteTrigger="(e) => showNote(e)" />
+        </div>
+      </div>
+    </section>
+
+    <section class="q-mb-xl">
+      <h5 class="q-mt-lg q-mb-sm">Faction Units</h5>
+      <div v-for="unit in faction.units" :key="unit.id" class="q-mb-lg row">
+        <UnitTable
+          :unit="unit"
+          :prereqs="getUnitPrereqs(unit)"
+          class="col col-sm-9 col-md-8 col-lg-5"
+          @showNote="showNote(unit)"
+        />
+      </div>
+    </section>
+
     <section v-if="faction.id === 25" class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Planet</h5>
       <div class="row flex items-center">
         <TI4Icon type="trait" name="legendary" />
         <strong class="q-ml-xs">
-          Custodia Vigilia (<span class="resource">2</span>/<span
-            class="influence"
-            >3</span
+          Custodia Vigilia (<span class="resource">2</span>/<span class="influence">3</span
           >)</strong
         ><q-btn
           @click="showNote(keleresNote)"
@@ -290,26 +273,24 @@
           icon="help_outline"
         />
         <div>
-          While you control Mecatol Rex, it gains SPACE CANNON 5 and PRODUCTION
-          3. Gain 2 command tokens when another player scores VP using Imperial.
+          While you control Mecatol Rex, it gains SPACE CANNON 5 and PRODUCTION 3. Gain 2 command
+          tokens when another player scores VP using Imperial.
         </div>
       </div>
     </section>
   </div>
-  <NoteDialog
-    v-model="noteDialog"
-    :noteName="noteName"
-    :noteTexts="noteTexts"
-  />
+  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onUpdated } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { Faction, Planet, Unit, Note } from 'components/models';
 import { api } from '@/boot/axios';
 import TI4Icon from 'components/ti4Icon.vue';
-import NoteDialog from 'components/noteDialog.vue';
+import NoteDialog from '@/components/noteDialog.vue';
 import UnitTable from '@/components/unitTable.vue';
+import FactionLeaderPanel from '@/components/FactionLeaderPanel.vue';
+import { useGetImage } from '@/composables/useGetImage';
 
 const props = defineProps<{
   id: number;
@@ -356,26 +337,9 @@ function showNote(item: Partial<{ name: string; notes: Note[] }>) {
   noteDialog.value = true;
 }
 
+const { getImage } = useGetImage();
+
 const imageDialog = ref(false);
-let agent = 1;
-let hero = 1;
-function getImage(type: string, id: number) {
-  const ext =
-    type.startsWith('sheet') || type === 'components' ? '.jpg' : '.webp';
-  // nomad
-  if (id === 22 && type === 'agent') {
-    type = type + agent++;
-  }
-  // keleres
-  else if (id === 25 && type === 'hero') {
-    type = type + hero++;
-  }
-  return `${process.env.API_URL}/images/${id}/${type + ext}`;
-}
-onUpdated(() => {
-  agent = 1;
-  hero = 1;
-});
 const carouselImage = ref('');
 function openImageDialog(type: string, id: number) {
   carouselImage.value = `${process.env.API_URL}/images/${id}/${type}.jpg`;

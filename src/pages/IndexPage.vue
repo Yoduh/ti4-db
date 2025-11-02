@@ -4,15 +4,20 @@
     <div class="row justify-center">
       <div class="col">
         <h2 class="q-mb-sm text-center">Welcome to the TI4 Database</h2>
+        <div class="text-h5 q-mb-sm text-center">
+          This site is up to date with Codex I-IV, Prophecy of Kings and Thunder's Edge expansions
+        </div>
         <div class="text-subtitle1 q-mt-none text-center text-italic">
-          Navigate with the above toolbar to find all the information you need
-          to play Twilight Imperium 4th Edition
+          Navigate with the above toolbar to find all the information you need to play Twilight
+          Imperium 4th Edition!
         </div>
       </div>
     </div>
     <div class="row justify-center">
       <div class="copyright text-caption text-center">
-        Twilight Imperium © Fantasy Flight Games. Not Affiliated.
+        This is an unofficial fan-made website for Twilight Imperium
+        <br />All game materials, images, and information are © Fantasy Flight Games. <br />This
+        site is intended for non-commercial, educational, and informational purposes only.
       </div>
     </div>
   </q-page>

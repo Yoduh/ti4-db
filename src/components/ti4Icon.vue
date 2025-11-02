@@ -1,16 +1,12 @@
 <template>
-  <q-img
-    v-for="i in quantity"
-    :key="i"
-    :src="icon"
-    :height="size"
-    :width="size"
-    fit="contain"
-  />
+  <span v-for="i in quantity" :key="i">
+    <q-img v-if="icon" :src="icon" :height="size" :width="size" fit="contain" />
+  </span>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
+const icons = import.meta.glob('../assets/*.{webp,svg}', { eager: true });
 
 interface Props {
   type: 'tech' | 'trait';
@@ -26,15 +22,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 const icon = computed(() => {
   const name = props.name.toLowerCase();
-  return new URL(
-    `../assets/${props.type}-${name}.${
-      props.type === 'trait' &&
-      ['hazardous', 'cultural', 'industrial'].includes(name)
-        ? 'svg'
-        : 'webp'
-    }`,
-    import.meta.url
-  ).href;
+  const ext =
+    props.type === 'trait' && ['hazardous', 'cultural', 'industrial'].includes(name)
+      ? 'svg'
+      : 'webp';
+  const path = `../assets/${props.type}-${name}.${ext}`;
+
+  if (icons[path]) {
+    return new URL(path, import.meta.url).href;
+  } else {
+    return null; // fallback or placeholder
+  }
 });
 </script>
 

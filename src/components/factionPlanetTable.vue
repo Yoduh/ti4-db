@@ -9,13 +9,7 @@
     ref="factionPlanetTable"
   >
     <template v-slot:top-right>
-      <q-input
-        borderless
-        dense
-        debounce="300"
-        v-model="filter"
-        placeholder="Search"
-      >
+      <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
@@ -25,7 +19,7 @@
       <q-td :props="props">
         <div class="flex items-center">
           <div class="my-table-details">
-            {{ ('0' + props.row.tile).slice(-2) }}
+            {{ props.row.tile < 10 ? '0' + props.row.tile : props.row.tile }}
           </div>
           <q-btn
             size="md"
@@ -52,11 +46,7 @@
           factionRow: isFirstFactionRow(props.row.id, props.row.factionId),
         }"
       >
-        {{
-          isFirstFactionRow(props.row.id, props.row.factionId)
-            ? props.row.faction
-            : ''
-        }}
+        {{ isFirstFactionRow(props.row.id, props.row.factionId) ? props.row.faction : '' }}
       </q-td>
     </template>
   </q-table>
@@ -91,9 +81,7 @@ watch(
   }
 );
 function isFirstFactionRow(rowId: number, factionId: number) {
-  const firstFactionRow = sortedRows.value.find(
-    (r) => r.factionId === factionId
-  );
+  const firstFactionRow = sortedRows.value.find((r) => r.factionId === factionId);
   if (firstFactionRow.id === rowId) return true;
   return false;
 }

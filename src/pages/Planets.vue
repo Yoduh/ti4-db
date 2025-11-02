@@ -26,6 +26,9 @@ const factionSystems = computed(() =>
     .map((p) => {
       return { ...p, faction: (p.faction as Faction).name };
     })
+    .sort((a, b) =>
+      a.faction.replace(/^The\s+/i, '').localeCompare(b.faction.replace(/^The\s+/i, ''))
+    )
 );
 const planetSystems = computed<Planet[]>(() =>
   planets.value.filter((p) => p.factionId === null && p.resource !== null)
