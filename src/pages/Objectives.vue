@@ -1,12 +1,6 @@
 <template>
   <div>
-    <q-input
-      v-model="search"
-      filled
-      type="search"
-      hint="Search"
-      class="q-mt-lg"
-    >
+    <q-input v-model="search" filled type="search" hint="Search" class="q-mt-lg">
       <template v-slot:append>
         <q-icon name="search" />
       </template>
@@ -24,11 +18,7 @@
         @click="toggle(button)"
       ></q-btn>
     </q-btn-group>
-    <div
-      v-for="objective in filteredObjectives"
-      :key="objective.id"
-      class="q-mb-xl"
-    >
+    <div v-for="objective in filteredObjectives" :key="objective.id" class="q-mb-xl">
       <h5 class="q-mb-none">
         {{ objective.name }}<span v-if="objective.isOmega"> &Omega;</span>
         <q-btn
@@ -44,9 +34,7 @@
       </h5>
       <div>
         <strong
-          >{{ toTitleCase(objective.type) }} Objective<span
-            v-if="objective.stage"
-          >
+          >{{ toTitleCase(objective.type) }} Objective<span v-if="objective.stage">
             - Stage {{ objective.stage }}</span
           >
           ({{ objective.points }} VP)</strong
@@ -58,11 +46,7 @@
       <div>{{ objective.condition }}</div>
     </div>
   </div>
-  <NoteDialog
-    v-model="noteDialog"
-    :noteName="noteName"
-    :noteTexts="noteTexts"
-  />
+  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
@@ -72,15 +56,18 @@ import type { Objective, Note } from 'components/models';
 import NoteDialog from 'components/noteDialog.vue';
 
 const objectives = ref<Objective[]>([]);
-api.get('/objective').then((res) => {
-  objectives.value = res.data;
-});
+api
+  .get('/objective')
+  .then((res) => {
+    objectives.value = res.data;
+  })
+  .catch((e) => console.error(e));
 const search = ref('');
 const filteredObjectives = computed<Objective[]>(() => {
   return objectives.value.filter(
     (o) =>
       o.name.toLowerCase().includes(search.value.toLocaleLowerCase()) &&
-      activeFilters.value.find((f) => f === o.stage.toLowerCase()) !== undefined
+      activeFilters.value.find((f) => f === o.stage.toLowerCase()) !== undefined,
   );
 });
 
@@ -115,16 +102,13 @@ const offColor = 'blue-grey-10';
 const activeFilters = ref<string[]>(['i', 'ii', '']);
 
 function toggle(option: toggleBtn) {
-  if (
-    activeFilters.value.length === 1 &&
-    activeFilters.value[0] === option.stage
-  ) {
+  if (activeFilters.value.length === 1 && activeFilters.value[0] === option.stage) {
     activeFilters.value = ['i', 'ii', ''];
     objectiveToggles.value.forEach((t) => (t.color = t.onColor));
   } else {
     activeFilters.value = [option.stage];
     objectiveToggles.value.forEach((t) =>
-      t.stage === option.stage ? (t.color = t.onColor) : (t.color = offColor)
+      t.stage === option.stage ? (t.color = t.onColor) : (t.color = offColor),
     );
   }
 }

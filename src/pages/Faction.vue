@@ -13,11 +13,11 @@
           <h5 class="q-mt-lg q-mb-sm">Home Planets</h5>
           <div class="row">
             <div v-for="(planetTile, idx) in startingPlanets" :key="idx">
-              <div v-if="Number(planetTile[0].tile) === 2" class="q-px-md">The Xxcha Kingdom</div>
-              <div v-else-if="Number(planetTile[0].tile) === 14" class="q-px-md">
+              <div v-if="Number(planetTile[0]?.tile) === 2" class="q-px-md">The Xxcha Kingdom</div>
+              <div v-else-if="Number(planetTile[0]?.tile) === 14" class="q-px-md">
                 The Mentak Coalition
               </div>
-              <div v-else-if="Number(planetTile[0].tile) === 58" class="q-px-md">
+              <div v-else-if="Number(planetTile[0]?.tile) === 58" class="q-px-md">
                 The Argent Flight
               </div>
               <div v-for="planet in planetTile" :key="planet.id" class="q-px-md">
@@ -236,7 +236,7 @@
             </div>
             <UnitTable
               :unit="breakthrough.unit"
-              prereqs="Breakthrough"
+              :prereqs="getUnitPrereqs(breakthrough.unit)"
               @showNote="showNote(breakthrough.unit)"
             />
           </div>
@@ -326,12 +326,15 @@ const slide = ref('front');
 watch(
   () => props.id,
   (newId) => {
-    api.get(`/faction/${newId}`).then((res) => {
-      faction.value = res.data;
-    });
+    api
+      .get(`/faction/${newId}`)
+      .then((res) => {
+        faction.value = res.data;
+      })
+      .catch((e) => console.error(e));
     slide.value = 'front';
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const startingPlanets = computed(() => {
@@ -339,14 +342,17 @@ const startingPlanets = computed(() => {
   return Object.values(
     faction.value.planets.reduce<Planet[][]>((acc, current: Planet) => {
       acc[current.tile] = acc[current.tile] ?? [];
-      acc[current.tile].push(current);
+      acc[current.tile]?.push(current);
       return acc;
-    }, [])
+    }, []),
   );
 });
 
 const nonUnitTech = computed(
-  () => faction.value?.factionTech.filter((t) => t.techType !== 'Unit') ?? []
+  () =>
+    faction.value?.factionTech.filter(
+      (t) => t.techType !== 'Unit' && t.techType !== 'Breakthrough',
+    ) ?? [],
 );
 
 function getUnitPrereqs(unit: Unit) {
@@ -354,6 +360,9 @@ function getUnitPrereqs(unit: Unit) {
     return ft.name === unit.name;
   });
   if (tech) return tech.prereqs;
+  if (faction.value?.breakthroughs.some((b) => b.unitId === unit.id)) {
+    return [{ quantity: 1, techType: 'Breakthrough' }];
+  } else return [];
 }
 
 const noteDialog = ref(false);

@@ -81,7 +81,7 @@ import { api } from 'boot/axios';
 import type { NavButton } from './models';
 import { ref } from 'vue';
 import { QIcon } from 'quasar';
-import { Faction } from '@/components/models';
+import type { Faction } from '@/components/models';
 
 type ListButton = {
   id: number;
@@ -99,23 +99,28 @@ const bookmarks = ref<ListButton[][]>([]);
 const factionBtns = ref<ListButton[][]>([]);
 
 if (props.button.endpoint) {
-  api.get(`${props.button.endpoint}`).then((res) => {
-    factionBtns.value = res.data.map((f: Faction) => [f]);
-    const firmamentIdx = factionBtns.value.findIndex((f) => f[0].id === 28);
-    const obsidianIdx = factionBtns.value.findIndex((f) => f[0].id === 29);
-    const obsidian = factionBtns.value.splice(obsidianIdx, 1)[0];
-    factionBtns.value[firmamentIdx].push(obsidian[0]);
-
-    const loadedBookmarks = localStorage.getItem('bookmarks');
-    if (loadedBookmarks) {
-      bookmarks.value = JSON.parse(loadedBookmarks);
-      if (factionBtns.value.length > 0) {
-        factionBtns.value = factionBtns.value.filter(
-          (btn) => !bookmarks.value.find((bk) => bk[0].id === btn[0].id)
-        );
+  api
+    .get(`${props.button.endpoint}`)
+    .then((res) => {
+      factionBtns.value = res.data.map((f: Faction) => [f]);
+      const firmamentIdx = factionBtns.value.findIndex((f) => f[0]?.id === 28);
+      const obsidianIdx = factionBtns.value.findIndex((f) => f[0]?.id === 29);
+      const obsidian = factionBtns.value.splice(obsidianIdx, 1)[0];
+      if (obsidian && obsidian[0]) {
+        factionBtns.value[firmamentIdx]?.push(obsidian[0]);
       }
-    }
-  });
+
+      const loadedBookmarks = localStorage.getItem('bookmarks');
+      if (loadedBookmarks) {
+        bookmarks.value = JSON.parse(loadedBookmarks);
+        if (factionBtns.value.length > 0) {
+          factionBtns.value = factionBtns.value.filter(
+            (btn) => !bookmarks.value.find((bk) => bk[0]?.id === btn[0]?.id),
+          );
+        }
+      }
+    })
+    .catch((e) => console.error(e));
 }
 
 function showTI4Icon(button: NavButton, listBtn: ListButton) {
@@ -127,13 +132,17 @@ function addBookmark(evt: PointerEvent, btn: ListButton[], index: number) {
   evt.preventDefault();
   bookmarks.value.push(btn);
   factionBtns.value.splice(index, 1);
-  qicon.value[index].$el.blur();
+  qicon.value[index]?.$el.blur();
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks.value));
 }
 function removeBookmark(evt: PointerEvent, btn: ListButton[], index: number) {
   evt.stopPropagation();
   evt.preventDefault();
-  const nextBtn = factionBtns.value.findIndex((b) => b[0].name.localeCompare(btn[0].name) > 0);
+  const nextBtn = factionBtns.value.findIndex((b) => {
+    if (b && b[0] && btn[0]) {
+      return b[0].name.localeCompare(btn[0].name) > 0;
+    }
+  });
   factionBtns.value.splice(nextBtn, 0, btn);
   bookmarks.value.splice(index, 1);
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks.value));

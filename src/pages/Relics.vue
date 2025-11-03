@@ -42,11 +42,7 @@
       </div>
     </div>
   </div>
-  <NoteDialog
-    v-model="noteDialog"
-    :noteName="noteName"
-    :noteTexts="noteTexts"
-  />
+  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
@@ -57,17 +53,20 @@ import NoteDialog from 'components/noteDialog.vue';
 
 const cards = ref<Relic[]>([]);
 const filteredCards = ref<Relic[]>([]);
-api.get('/relic').then((res) => {
-  cards.value = res.data;
-  filteredCards.value = res.data;
-});
+api
+  .get('/relic')
+  .then((res) => {
+    cards.value = res.data;
+    filteredCards.value = res.data;
+  })
+  .catch((e) => console.error(e));
 const filter = ref('');
 function filterCards() {
   filteredCards.value = cards.value;
   if (filter.value === '') return;
 
   filteredCards.value = filteredCards.value.filter((a) =>
-    a.name.toLowerCase().includes(filter.value.toLocaleLowerCase())
+    a.name.toLowerCase().includes(filter.value.toLocaleLowerCase()),
   );
 }
 

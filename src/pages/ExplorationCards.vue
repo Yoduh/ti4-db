@@ -1,12 +1,6 @@
 <template>
   <div>
-    <q-input
-      v-model="search"
-      filled
-      type="search"
-      hint="Search"
-      class="q-my-lg"
-    >
+    <q-input v-model="search" filled type="search" hint="Search" class="q-my-lg">
       <template v-slot:append>
         <q-icon name="search" />
       </template>
@@ -26,9 +20,7 @@
     </q-btn-group>
     <div v-for="card in filteredCards" :key="card.id" class="q-mb-xl">
       <h5 class="q-mb-none">
-        <TI4Icon type="trait" :name="card.trait" /><span class="q-ml-sm">{{
-          card.name
-        }}</span>
+        <TI4Icon type="trait" :name="card.trait" /><span class="q-ml-sm">{{ card.name }}</span>
         <q-btn
           v-if="card.notes && card.notes.length > 0"
           @click="showNote(card)"
@@ -40,9 +32,7 @@
           icon="help_outline"
         />
       </h5>
-      <div class="text-caption">
-        Number in {{ card.trait }} deck: {{ card.numAvailable }}
-      </div>
+      <div class="text-caption">Number in {{ card.trait }} deck: {{ card.numAvailable }}</div>
       <div v-if="!card.effect.includes('CROWN')">{{ card.effect }}</div>
       <div v-else>
         <span v-for="(half, i) in replaceCrown(card.effect)" :key="i">
@@ -58,11 +48,7 @@
       </div>
     </div>
   </div>
-  <NoteDialog
-    v-model="noteDialog"
-    :noteName="noteName"
-    :noteTexts="noteTexts"
-  />
+  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
@@ -107,9 +93,12 @@ const traitToggles = ref([
 const offColor = 'blue-grey-10';
 
 const cards = ref<ExplorationCard[]>([]);
-api.get('/components/exploration').then((res) => {
-  cards.value = res.data;
-});
+api
+  .get('/components/exploration')
+  .then((res) => {
+    cards.value = res.data;
+  })
+  .catch((e) => console.error(e));
 
 const search = ref('');
 
@@ -117,28 +106,20 @@ const filteredCards = computed<ExplorationCard[]>(() => {
   return cards.value.filter(
     (a) =>
       a.name.toLowerCase().includes(search.value.toLowerCase()) &&
-      activeFilters.value.find((f) => f === a.trait.toLowerCase()) !== undefined
+      activeFilters.value.find((f) => f === a.trait.toLowerCase()) !== undefined,
   );
 });
 
-const activeFilters = ref<string[]>([
-  'industrial',
-  'hazardous',
-  'cultural',
-  'frontier',
-]);
+const activeFilters = ref<string[]>(['industrial', 'hazardous', 'cultural', 'frontier']);
 
 function toggle(option: toggleBtn) {
-  if (
-    activeFilters.value.length === 1 &&
-    activeFilters.value[0] === option.trait
-  ) {
+  if (activeFilters.value.length === 1 && activeFilters.value[0] === option.trait) {
     activeFilters.value = ['industrial', 'hazardous', 'cultural', 'frontier'];
     traitToggles.value.forEach((t) => (t.color = t.onColor));
   } else {
     activeFilters.value = [option.trait];
     traitToggles.value.forEach((t) =>
-      t.trait === option.trait ? (t.color = t.onColor) : (t.color = offColor)
+      t.trait === option.trait ? (t.color = t.onColor) : (t.color = offColor),
     );
   }
 }

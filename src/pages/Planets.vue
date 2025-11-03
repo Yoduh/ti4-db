@@ -16,9 +16,12 @@ import PlanetTable from '@/components/planetTable.vue';
 import FactionPlanetTable from '@/components/factionPlanetTable.vue';
 
 const planets = ref<Planet[]>([]);
-api.get('/planet').then((res) => {
-  planets.value = res.data;
-});
+api
+  .get('/planet')
+  .then((res) => {
+    planets.value = res.data;
+  })
+  .catch((e) => console.error(e));
 
 const factionSystems = computed(() =>
   planets.value
@@ -27,15 +30,15 @@ const factionSystems = computed(() =>
       return { ...p, faction: (p.faction as Faction).name };
     })
     .sort((a, b) =>
-      a.faction.replace(/^The\s+/i, '').localeCompare(b.faction.replace(/^The\s+/i, ''))
-    )
+      a.faction.replace(/^The\s+/i, '').localeCompare(b.faction.replace(/^The\s+/i, '')),
+    ),
 );
 const planetSystems = computed<Planet[]>(() =>
-  planets.value.filter((p) => p.factionId === null && p.resource !== null)
+  planets.value.filter((p) => p.factionId === null && p.resource !== null),
 );
-const anomalySystems = computed<Planet[]>(() =>
-  planets.value.filter((p) => p.factionId === null && p.resource === null)
-);
+// const anomalySystems = computed<Planet[]>(() =>
+//   planets.value.filter((p) => p.factionId === null && p.resource === null),
+// );
 </script>
 
 <style scoped></style>

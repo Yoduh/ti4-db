@@ -35,9 +35,11 @@
             <div class="text-caption text-italic">
               {{ unit.subtype ? unit.subtype : unit.type }}
             </div>
-            <div class="q-mb-sm" v-if="prereqs">
+            <div class="q-mb-sm" v-if="prereqs.length > 0">
               Pre-requisites:
-              <span v-if="prereqs === 'Breakthrough'">{{ prereqs }}</span>
+              <span v-if="prereqs[0]?.techType === 'Breakthrough'" class="text-bold"
+                >Breakthrough</span
+              >
               <template v-else>
                 <span v-for="(prereq, idx) in prereqs" :key="idx">
                   <TI4Icon type="tech" :name="prereq.techType" :quantity="prereq?.quantity" />
@@ -61,19 +63,24 @@
 
 <script setup lang="ts">
 import type { Unit } from 'components/models';
-import { QTableProps } from 'quasar';
+import type { QTableProps } from 'quasar';
 import TI4Icon from 'components/ti4Icon.vue';
 import { useGetImage } from '@/composables/useGetImage';
 
-defineProps<{
-  unit: Unit;
-  prereqs?: { quantity: number; techType: string }[] | 'Breakthrough';
-}>();
+withDefaults(
+  defineProps<{
+    unit: Unit;
+    prereqs?: { quantity: number; techType: string }[];
+  }>(),
+  {
+    prereqs: () => [],
+  },
+);
 
 const { getUnitImage } = useGetImage();
 
 function unitColumns(unit: Unit) {
-  let columns: QTableProps['columns'] = [];
+  const columns: QTableProps['columns'] = [];
   Object.entries(unit).forEach(([key, value]) => {
     if (columns && ['cost', 'combat', 'move', 'capacity'].includes(key) && value !== null) {
       columns.push({

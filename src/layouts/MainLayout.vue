@@ -50,7 +50,9 @@ import { ref, reactive } from 'vue';
 import Toolbar from 'components/Toolbar.vue';
 import { onClickOutside } from '@vueuse/core';
 import type { NavButton } from '@/components/models';
+import { useQuasar } from 'quasar';
 
+const $q = useQuasar();
 const drawer = ref(false);
 const drawerTarget = ref();
 onClickOutside(drawerTarget, (evt: PointerEvent) => {

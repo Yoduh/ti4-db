@@ -96,7 +96,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { Technology } from './models';
+import type { Technology } from './models';
 import TI4Icon from '@/components/ti4Icon.vue';
 import UnitTable from '@/components/unitTable.vue';
 
@@ -123,9 +123,9 @@ const renamedTechs = computed(() => {
 watch(
   () => props.techs,
   (techs) => {
-    tab.value = techs[0].id;
+    tab.value = techs[0]?.id;
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

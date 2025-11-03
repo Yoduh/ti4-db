@@ -44,11 +44,7 @@
       </div>
     </div>
   </div>
-  <NoteDialog
-    v-model="noteDialog"
-    :noteName="noteName"
-    :noteTexts="noteTexts"
-  />
+  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
@@ -59,17 +55,20 @@ import NoteDialog from 'components/noteDialog.vue';
 
 const agendas = ref<Agenda[]>([]);
 const filteredAgendas = ref<Agenda[]>([]);
-api.get('/agenda').then((res) => {
-  agendas.value = res.data;
-  filteredAgendas.value = res.data;
-});
+api
+  .get('/agenda')
+  .then((res) => {
+    agendas.value = res.data;
+    filteredAgendas.value = res.data;
+  })
+  .catch((e) => console.error(e));
 const filter = ref('');
 function filterAgendas() {
   filteredAgendas.value = agendas.value;
   if (filter.value === '') return;
 
   filteredAgendas.value = filteredAgendas.value.filter((a) =>
-    a.name.toLowerCase().includes(filter.value.toLocaleLowerCase())
+    a.name.toLowerCase().includes(filter.value.toLocaleLowerCase()),
   );
 }
 

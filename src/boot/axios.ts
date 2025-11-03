@@ -1,6 +1,7 @@
-import { boot } from 'quasar/wrappers';
-import axios, { AxiosInstance } from 'axios';
-import { Loading, QSpinnerGears } from 'quasar';
+import { defineBoot } from '#q-app/wrappers';
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+import { Loading } from 'quasar';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -15,7 +16,7 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: process.env.API_URL });
+const api = axios.create({ baseURL: process.env.API_URL || '' });
 
 let pendingRequests = 0;
 
@@ -36,7 +37,7 @@ api.interceptors.response.use(
     }
     return res;
   },
-  function (error) {
+  function (error: Error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     pendingRequests--;
@@ -44,10 +45,10 @@ api.interceptors.response.use(
       Loading.hide();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
-export default boot(({ app }) => {
+export default defineBoot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios;

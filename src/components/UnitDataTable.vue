@@ -43,10 +43,10 @@
 </template>
 
 <script setup lang="ts">
-import { Unit } from '@/components/models';
+import type { Unit } from '@/components/models';
 import { computed, ref } from 'vue';
 import { useGetImage } from '@/composables/useGetImage';
-import { QTableColumn } from 'quasar';
+import type { QTableColumn } from 'quasar';
 
 const props = defineProps<{
   units: Unit[];

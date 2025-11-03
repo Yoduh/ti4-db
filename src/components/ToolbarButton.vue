@@ -50,7 +50,7 @@ import TI4Icon from 'components/ti4Icon.vue';
 import { api } from 'boot/axios';
 import type { NavButton } from './models';
 import { ref } from 'vue';
-import { QIcon } from 'quasar';
+import type { QIcon } from 'quasar';
 
 type ListButton = {
   id: string;
@@ -67,9 +67,12 @@ const props = defineProps<{
 const listBtns = ref<ListButton[]>([]);
 
 if (props.button.endpoint) {
-  api.get(`${props.button.endpoint}`).then((res) => {
-    listBtns.value = res.data;
-  });
+  api
+    .get(`${props.button.endpoint}`)
+    .then((res) => {
+      listBtns.value = res.data;
+    })
+    .catch((e) => console.error(e));
 }
 
 function showTI4Icon(button: NavButton, listBtn: ListButton) {

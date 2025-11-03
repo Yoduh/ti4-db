@@ -95,7 +95,7 @@ export type Technology = {
     {
       quantity: number;
       techType: string;
-    }
+    },
   ];
   pok: boolean;
   unitId: number;
@@ -222,6 +222,7 @@ export type Breakthrough = {
   name: string;
   description: string;
   factionId: number;
+  unitId?: number;
   unit: Unit;
   notes?: Note[];
 };

@@ -17,9 +17,9 @@ export function useScrollMemory(): void {
       ) {
         scrollPositions[oldPath] = window.scrollY;
         setTimeout(() => {
-          window.scrollTo({ top: scrollPositions[oldPath] });
+          window.scrollTo({ top: scrollPositions[oldPath] ?? 0 });
         }, 0);
       }
-    }
+    },
   );
 }

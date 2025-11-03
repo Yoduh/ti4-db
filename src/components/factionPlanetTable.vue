@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { QTableProps } from 'quasar';
+import type { QTableProps } from 'quasar';
 import type { Planet } from './models';
 
 defineProps<{
@@ -78,7 +78,7 @@ watch(
   () => factionPlanetTable.value?.filteredSortedRows,
   (rows) => {
     sortedRows.value = rows;
-  }
+  },
 );
 function isFirstFactionRow(rowId: number, factionId: number) {
   const firstFactionRow = sortedRows.value.find((r) => r.factionId === factionId);

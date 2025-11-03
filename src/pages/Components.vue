@@ -2,9 +2,7 @@
   <h3>Components</h3>
   <div class="column">
     <div v-for="(component, idx) in components" :key="idx">
-      <RouterLink :to="`/components/${url(component)}`" class="link">{{
-        component
-      }}</RouterLink>
+      <RouterLink :to="`/components/${url(component)}`" class="link">{{ component }}</RouterLink>
       <q-separator class="q-my-lg" />
     </div>
   </div>
@@ -15,9 +13,12 @@ import { api } from '@/boot/axios';
 import { ref } from 'vue';
 
 const components = ref<string[]>([]);
-api.get('/components').then((res) => {
-  components.value = res.data.map((d: { name: string }) => d.name);
-});
+api
+  .get('/components')
+  .then((res) => {
+    components.value = res.data.map((d: { name: string }) => d.name);
+  })
+  .catch((e) => console.error(e));
 
 function url(component: string) {
   return component.replaceAll(' ', '-').toLowerCase();

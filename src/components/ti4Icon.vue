@@ -31,7 +31,7 @@ const icon = computed(() => {
   if (icons[path]) {
     return new URL(path, import.meta.url).href;
   } else {
-    return null; // fallback or placeholder
+    return null;
   }
 });
 </script>

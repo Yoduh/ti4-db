@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { QTableProps } from 'quasar';
+import type { QTableProps } from 'quasar';
 import type { Planet } from './models';
 import Ti4Icon from '@/components/ti4Icon.vue';
 
@@ -169,7 +169,6 @@ const planetColumns = ref<QTableProps['columns']>([
 const imageDialog = ref(false);
 const dialogImage = ref('');
 function openImageDialog(tile: number | string, name: string) {
-  console.log(tile);
   if (!tile && name === 'Mirage') {
     tile = 'mirage';
   } else if (!tile && name.startsWith('Custodia')) {

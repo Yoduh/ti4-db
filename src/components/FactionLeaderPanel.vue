@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { Leader } from './models';
+import type { Leader } from './models';
 import { useGetImage } from '@/composables/useGetImage';
 
 const props = defineProps({
@@ -61,16 +61,19 @@ const tabs = ref<Array<number>>([]);
 const groupedLeaders = ref<Array<Array<Leader>>>([]);
 function groupLeaders() {
   tabs.value = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const grouped: any = {};
 
   for (let i = 0; i < props.leaders.length; i++) {
     const leader = props.leaders[i];
-    const type = leader.type;
-    if (!grouped[type]) {
+    const type = leader?.type;
+    if (type && !grouped[type]) {
       grouped[type] = [];
       tabs.value.push(leader.id);
     }
-    grouped[type].push(leader);
+    if (type) {
+      grouped[type].push(leader);
+    }
   }
   groupedLeaders.value = Object.values(grouped);
 }
@@ -79,7 +82,7 @@ watch(
   () => {
     groupLeaders();
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

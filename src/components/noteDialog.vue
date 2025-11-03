@@ -33,7 +33,7 @@ const props = defineProps<{
   noteName: string;
   noteTexts: Note[] | undefined;
 }>();
-const dialog = defineModel<boolean>();
+const dialog = defineModel<boolean>({ default: false });
 
 const noteArrays = computed<Note[]>(() => {
   if (props.noteTexts) {

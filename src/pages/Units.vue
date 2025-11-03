@@ -112,28 +112,33 @@ type factionFilter = {
 const Units = ref<Unit[]>([]);
 const filteredUnits = ref<Unit[]>([]);
 const factions = ref<factionFilter[]>([{ value: null, label: 'NON-FACTION' }]);
-api.get('/unit').then((res) => {
-  Units.value = res.data.sort((a: Unit, b: Unit) => {
-    if (a.faction && b.faction) {
-      return a.faction.name
-        .replace(/^The\s+/i, '')
-        .localeCompare(b.faction.name.replace(/^The\s+/i, ''));
-    } else {
-      return;
+api
+  .get('/unit')
+  .then((res) => {
+    Units.value = res.data.sort((a: Unit, b: Unit) => {
+      if (a.faction && b.faction) {
+        return a.faction.name
+          .replace(/^The\s+/i, '')
+          .localeCompare(b.faction.name.replace(/^The\s+/i, ''));
+      } else {
+        return;
+      }
+    });
+    filteredUnits.value = res.data;
+    const unitMap = new Map();
+    for (const u of Units.value) {
+      if (u.factionId && u.faction?.name) {
+        unitMap.set(u.faction.name, u.factionId);
+      }
     }
+    unitMap.forEach((v, k) => {
+      factions.value.push({ value: v, label: k });
+      factionFilterModel.value.push(v);
+    });
+  })
+  .catch((e) => {
+    console.error(e);
   });
-  filteredUnits.value = res.data;
-  const unitMap = new Map();
-  for (const u of Units.value) {
-    if (u.factionId && u.faction?.name) {
-      unitMap.set(u.faction.name, u.factionId);
-    }
-  }
-  unitMap.forEach((v, k) => {
-    factions.value.push({ value: v, label: k });
-    factionFilterModel.value.push(v);
-  });
-});
 
 const searchFilter = ref('');
 const deselectedTypes = ref<string[]>([]);
@@ -143,19 +148,19 @@ function filterUnits() {
   }
   // search filter
   filteredUnits.value = Units.value.filter((a) =>
-    a.name.toLowerCase().includes(searchFilter.value.toLocaleLowerCase())
+    a.name.toLowerCase().includes(searchFilter.value.toLocaleLowerCase()),
   );
 
   // faction filter
   filteredUnits.value = filteredUnits.value.filter((u) =>
-    factionFilterModel.value.includes(u.factionId)
+    factionFilterModel.value.includes(u.factionId),
   );
 
   // type filter
   deselectedTypes.value = typeValues.filter((t) => !typesFilterModel.value.includes(t));
   filteredUnits.value = filteredUnits.value.filter((u) => {
     return !deselectedTypes.value.some(
-      (t) => u.name.startsWith(t) || u.type?.startsWith(t) || u.subtype?.startsWith(t)
+      (t) => u.name.startsWith(t) || u.type?.startsWith(t) || u.subtype?.startsWith(t),
     );
   });
 }
@@ -205,7 +210,7 @@ function filterType(val: string, subtypes: string[]) {
   // if selecting type, also add all related subtypes
   if (!typesFilterModel.value.includes(val)) {
     typesFilterModel.value = typesFilterModel.value.filter(
-      (t) => t !== val && !subtypes.includes(t)
+      (t) => t !== val && !subtypes.includes(t),
     );
     // if deselecting type, also deselect all related subtypes
   } else {

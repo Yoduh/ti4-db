@@ -39,11 +39,14 @@ import { ref } from 'vue';
 
 const factions = ref<Faction[]>([]);
 const firmament = ref<Faction[]>([]);
-api.get('/faction/names').then((res) => {
-  factions.value = res.data;
-  firmament.value = factions.value.filter((f) => f.id === 28 || f.id === 29);
-  factions.value = factions.value.filter((f) => f.id !== 29);
-});
+api
+  .get('/faction/names')
+  .then((res) => {
+    factions.value = res.data;
+    firmament.value = factions.value.filter((f) => f.id === 28 || f.id === 29);
+    factions.value = factions.value.filter((f) => f.id !== 29);
+  })
+  .catch((e) => console.error(e));
 
 function getLogo(id: number) {
   return `${process.env.API_URL}/images/${id}/logo.webp`;

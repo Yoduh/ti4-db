@@ -31,8 +31,8 @@ defineProps<{
 }>();
 
 const router = useRouter();
-function goHome() {
-  router.push('/');
+async function goHome() {
+  await router.push('/');
 }
 </script>
 

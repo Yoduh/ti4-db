@@ -41,18 +41,14 @@
         </div>
       </div>
     </div>
-    <q-page-scroller
-      position="bottom-right"
-      :scroll-offset="150"
-      :offset="[18, 18]"
-    >
+    <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
       <q-btn fab icon="keyboard_arrow_up" color="accent" />
     </q-page-scroller>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Rule, RuleNode } from 'components/models';
+import type { Rule, RuleNode } from '@/components/models';
 import { api } from '@/boot/axios';
 import { ref, reactive } from 'vue';
 
@@ -60,33 +56,33 @@ const rules = ref<Rule[]>([]);
 const filteredTree = ref<RuleNode[]>([]);
 const ruleTree = reactive<RuleNode[]>([]);
 
-api.get('/rule').then((res) => {
-  rules.value = res.data;
+api
+  .get('/rule')
+  .then((res) => {
+    rules.value = res.data;
 
-  const idMapping = res.data.reduce(
-    (acc: { [key: string]: number }, el: Rule, i: number) => {
+    const idMapping = res.data.reduce((acc: { [key: string]: number }, el: Rule, i: number) => {
       acc[el.ref] = i;
       return acc;
-    },
-    {}
-  );
+    }, {});
 
-  let root;
-  res.data.forEach((el: Rule) => {
-    // Handle the root element
-    if (el.parentRef === null) {
-      root = el;
-      ruleTree.push(root);
-      return;
-    }
-    // Use our mapping to locate the parent element in our data array
-    const parentEl = res.data[idMapping[el.parentRef]];
-    // Add our current el to its parent's children array
-    parentEl.children = [...(parentEl.children || []), el];
-  });
+    let root;
+    res.data.forEach((el: Rule) => {
+      // Handle the root element
+      if (el.parentRef === null) {
+        root = el;
+        ruleTree.push(root);
+        return;
+      }
+      // Use our mapping to locate the parent element in our data array
+      const parentEl = res.data[idMapping[el.parentRef]];
+      // Add our current el to its parent's children array
+      parentEl.children = [...(parentEl.children || []), el];
+    });
 
-  filteredTree.value = ruleTree;
-});
+    filteredTree.value = ruleTree;
+  })
+  .catch((e) => console.error(e));
 
 function formatHeader(rule: Rule) {
   return rule.text.split('\n');
@@ -103,8 +99,8 @@ function searchRules() {
   // if search.value is a decimal, search the refs only
 
   filteredTree.value.forEach((header) => {
-    let headerTitle = header.text.split('\n')[0].toLocaleLowerCase();
-    if (headerTitle.includes(search.value.toLowerCase())) {
+    const headerTitle = header.text.split('\n')[0]?.toLocaleLowerCase();
+    if (headerTitle && headerTitle.includes(search.value.toLowerCase())) {
       header.relevance = 4;
     } else {
       header.relevance = 0;
@@ -115,10 +111,7 @@ function searchRules() {
         if (rule.text.toLowerCase().includes(search.value.toLowerCase())) {
           if (rule.category === 'subheader') {
             header.relevance = 3;
-          } else if (
-            rule.category === 'rule' &&
-            (!header.relevance || header.relevance < 2)
-          ) {
+          } else if (rule.category === 'rule' && (!header.relevance || header.relevance < 2)) {
             header.relevance = 2;
           }
         } else if (rule.children) {

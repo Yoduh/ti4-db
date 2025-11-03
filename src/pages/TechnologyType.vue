@@ -26,7 +26,7 @@
         />
       </div>
       <div v-for="(techArrays, j) in split" :key="j">
-        <h5 class="q-mb-sm text-bold">
+        <h5 class="q-mb-sm text-bold" v-if="techArrays[0] && techArrays[0][0]">
           {{ techArrays[0][0].faction?.name }}
         </h5>
         <TechPanel
@@ -61,22 +61,27 @@ const filteredTechs = ref<Technology[]>([]);
 watch(
   () => props.techType,
   (newType) => {
-    api.get(`/technology/${newType}`).then((res) => {
-      techs.value = res.data as Technology[];
-      filteredTechs.value = res.data as Technology[];
-    });
+    api
+      .get(`/technology/${newType}`)
+      .then((res) => {
+        techs.value = res.data as Technology[];
+        filteredTechs.value = res.data as Technology[];
+      })
+      .catch((e) => console.error(e));
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 function groupTechnologies(
   techs: Technology[],
   prop1: 'name' | 'factionId' | 'faction',
-  prop2: 'name' | null = null
+  prop2: 'name' | null = null,
 ): Technology[][] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const grouped: any = {};
 
   for (const tech of techs) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let val: any = tech[`${prop1}`];
     if (val && prop2) {
       val = val[`${prop2}`];
@@ -95,7 +100,7 @@ function filterTechs() {
   if (filter.value === '') return;
 
   filteredTechs.value = filteredTechs.value.filter((a) =>
-    a.name.toLowerCase().includes(filter.value.toLocaleLowerCase())
+    a.name.toLowerCase().includes(filter.value.toLocaleLowerCase()),
   );
 }
 
@@ -107,7 +112,7 @@ const splitTech = computed<Array<Array<Array<Array<Technology>>>>>(() => {
       groupTechnologies(
         filteredTechs.value.filter((t) => t.factionId),
         'faction',
-        'name'
+        'name',
       ).map((o) => {
         return groupTechnologies(o, 'name');
       }),
@@ -117,7 +122,7 @@ const splitTech = computed<Array<Array<Array<Array<Technology>>>>>(() => {
       groupTechnologies(
         filteredTechs.value.filter((t) => t.factionId),
         'faction',
-        'name'
+        'name',
       ).map((o) => {
         return groupTechnologies(o, 'name');
       }),
