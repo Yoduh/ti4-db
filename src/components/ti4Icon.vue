@@ -6,7 +6,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-const icons = import.meta.glob('../assets/*.{webp,svg}', { eager: true });
+const icons: Record<string, string> = import.meta.glob('../assets/*.{webp,svg}', {
+  eager: true,
+  import: 'default',
+});
 
 interface Props {
   type: 'tech' | 'trait';
@@ -28,11 +31,7 @@ const icon = computed(() => {
       : 'webp';
   const path = `../assets/${props.type}-${name}.${ext}`;
 
-  if (icons[path]) {
-    return new URL(path, import.meta.url).href;
-  } else {
-    return null;
-  }
+  return icons[path] || null;
 });
 </script>
 
