@@ -23,7 +23,7 @@
               <div v-for="planet in planetTile" :key="planet.id" class="q-px-md">
                 <strong>
                   {{ planet.name }}
-                  <span v-if="planet.resource || planet.influence"
+                  <span v-if="!!planet.resource || !!planet.influence"
                     >(<span class="resource">{{ planet.resource }}</span
                     >/<span class="influence">{{ planet.influence }}</span
                     >)</span
@@ -35,7 +35,13 @@
                     :key="index"
                     class="text-caption"
                   >
-                    contains {{ feature.name }}
+                    <span v-if="'name' in feature && feature.name !== 'Space Station'"
+                      >contains {{ feature.name }}</span
+                    >
+                    <span v-else-if="'name' in feature && feature.name === 'Space Station'">{{
+                      feature.name
+                    }}</span>
+                    <span v-else-if="'legendary' in feature">Legendary system</span>
                   </div>
                 </template>
               </div>
@@ -156,37 +162,40 @@
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Technology</h5>
-      <div v-for="tech in faction.factionTech" :key="tech.id" class="q-mb-md">
-        <div v-if="tech.techType !== 'Unit'">
-          <div class="row items-center text-h6">
-            <TI4Icon v-if="tech.techType !== 'Unit'" type="tech" :name="tech.techType" />
-            <strong>{{ tech.name }}<span v-if="tech.isOmega"> &Omega;</span></strong>
-            <q-btn
-              v-if="tech.notes && tech.notes.length > 0"
-              @click="showNote(tech)"
-              color="amber-4"
-              round
-              dense
-              size="12px"
-              flat
-              icon="help_outline"
-            />
-          </div>
-          <div class="q-mb-sm">
-            {{ tech.description }}
-          </div>
-          <div class="q-mb-sm">
-            Pre-requisites:
-            <span v-for="(prereq, idx) in tech.prereqs" :key="idx">
-              <TI4Icon
-                type="tech"
-                :name="tech.techType === 'Unit' ? prereq.techType : tech.techType"
-                :quantity="prereq?.quantity"
+      <template v-if="nonUnitTech.length > 0">
+        <div v-for="tech in nonUnitTech" :key="tech.id" class="q-mb-md">
+          <div v-if="tech.techType !== 'Unit'">
+            <div class="row items-center text-h6">
+              <TI4Icon v-if="tech.techType !== 'Unit'" type="tech" :name="tech.techType" />
+              <strong>{{ tech.name }}<span v-if="tech.isOmega"> &Omega;</span></strong>
+              <q-btn
+                v-if="tech.notes && tech.notes.length > 0"
+                @click="showNote(tech)"
+                color="amber-4"
+                round
+                dense
+                size="12px"
+                flat
+                icon="help_outline"
               />
-            </span>
+            </div>
+            <div class="q-mb-sm">
+              {{ tech.description }}
+            </div>
+            <div class="q-mb-sm">
+              Pre-requisites:
+              <span v-for="(prereq, idx) in tech.prereqs" :key="idx">
+                <TI4Icon
+                  type="tech"
+                  :name="tech.techType === 'Unit' ? prereq.techType : tech.techType"
+                  :quantity="prereq?.quantity"
+                />
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
+      <div v-else><strong class="text-h6">None</strong></div>
     </section>
 
     <section class="q-mb-xl">
@@ -320,6 +329,10 @@ const startingPlanets = computed(() => {
     }, [])
   );
 });
+
+const nonUnitTech = computed(
+  () => faction.value?.factionTech.filter((t) => t.techType !== 'Unit') ?? []
+);
 
 function getUnitPrereqs(unit: Unit) {
   const tech = faction.value?.factionTech.find((ft) => {

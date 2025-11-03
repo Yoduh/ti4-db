@@ -40,7 +40,7 @@ export type Planet = {
   influence: number;
   trait: string;
   tech: string;
-  features: Array<{ name: string }>;
+  features: Array<{ name: string } | { legendary: { ability: string; description: string } }>;
   tile: number;
   faction?: Faction | string;
   notes?: Note[];
