@@ -20,7 +20,7 @@
           </div>
           <div class="column col-auto">
             <div class="row items-center">
-              <div class="text-h6">{{ unit.name }}<span v-if="unit.isOmega"> &Omega;</span></div>
+              <div class="text-h6">{{ unit.name }}</div>
               <q-btn
                 v-if="unit.notes && unit.notes.length > 0"
                 @click="$emit('showNote')"

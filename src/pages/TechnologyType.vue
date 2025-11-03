@@ -86,7 +86,6 @@ function groupTechnologies(
     }
     grouped[val].push(tech);
   }
-  console.log(grouped);
   return Object.values(grouped);
 }
 
