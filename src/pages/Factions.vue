@@ -15,14 +15,14 @@
       <div v-else class="row items-center">
         <RouterLink :to="`/factions/${faction.id}`" class="link row items-center">
           <div style="width: 60px" class="flex justify-center items-center">
-            <img :src="getLogo(faction.id)" class="q-mr-sm" />
+            <img :src="getLogo(faction.id)" class="q-mr-sm" width="55" />
           </div>
           <div>{{ faction.name }}</div>
         </RouterLink>
         <span style="font-size: 24px" class="q-mx-md">/</span>
         <RouterLink :to="`/factions/29`" class="link row items-center">
           <div style="width: 60px" class="flex justify-center items-center">
-            <img :src="getLogo(29)" class="q-mr-sm" />
+            <img :src="getLogo(29)" class="q-mr-sm" width="55" />
           </div>
           <div>The Obsidian</div>
         </RouterLink>

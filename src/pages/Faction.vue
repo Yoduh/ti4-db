@@ -1,7 +1,7 @@
 <template>
   <div v-if="faction">
     <div class="row items-center q-mt-lg">
-      <img :src="getImage('logo', faction.id)" class="q-mr-sm" style="height: 100%" />
+      <img :src="getImage('logo', faction.id)" class="q-mr-sm" style="height: 100%; width: 55px" />
       <h3 class="q-ma-none">{{ faction.name }}</h3>
     </div>
 
@@ -287,6 +287,19 @@
         </div>
       </div>
     </section>
+
+    <q-btn
+      id="firmamentObsidianToggle"
+      v-if="faction.id === 28 || faction.id === 29"
+      size="35px"
+      round
+      :to="`/factions/${faction.id === 28 ? 29 : 28}`"
+      icon="cached"
+    >
+      <q-tooltip v-if="faction.id === 28" class="text-body2">Switch to The Obsidian</q-tooltip>
+      <q-tooltip v-else class="text-body2">Switch to The Firmament</q-tooltip>
+      <q-img :src="getImage('logo', faction.id === 28 ? 29 : 28)" />
+    </q-btn>
   </div>
   <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
@@ -300,7 +313,9 @@ import NoteDialog from '@/components/noteDialog.vue';
 import UnitTable from '@/components/unitTable.vue';
 import FactionLeaderPanel from '@/components/FactionLeaderPanel.vue';
 import { useGetImage } from '@/composables/useGetImage';
+import { useScrollMemory } from '@/composables/useScrollMemory';
 
+useScrollMemory();
 const props = defineProps<{
   id: number;
 }>();
@@ -450,8 +465,28 @@ const keleresNote: { name: string; notes: Note[] } = {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 section > div {
   padding-left: 2rem;
+}
+#firmamentObsidianToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 200px;
+
+  @media (max-width: $breakpoint-md-max) {
+    right: 100px;
+  }
+
+  @media (max-width: $breakpoint-xs-max) {
+    right: 20px;
+  }
+
+  :deep(.q-icon) {
+    position: absolute;
+    z-index: 999;
+    font-size: 2.2em;
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.8));
+  }
 }
 </style>

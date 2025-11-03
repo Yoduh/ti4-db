@@ -8,8 +8,8 @@
           This site is up to date with Codex I-IV, Prophecy of Kings and Thunder's Edge expansions
         </div>
         <div class="text-subtitle1 q-mt-none text-center text-italic">
-          Navigate with the above toolbar to find all the information you need to play Twilight
-          Imperium 4th Edition!
+          Have an upcoming or ongoing game? Click the star next to each name in the Factions
+          dropdown and those factions will stay sorted on top for easy access!
         </div>
       </div>
     </div>

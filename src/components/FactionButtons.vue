@@ -26,7 +26,7 @@
             }`"
           >
             <div style="width: 35px" class="flex justify-center items-center q-mr-xs">
-              <img :src="getLogo(btn.id)" style="height: 30px" />
+              <img :src="getLogo(btn.id)" height="30" />
             </div>
             <TI4Icon v-if="showTI4Icon(button, btn)" type="tech" :name="btn.name" />
             <q-item-label>{{ btn.name }}</q-item-label>
@@ -57,7 +57,7 @@
             }`"
           >
             <div style="width: 35px" class="flex justify-center items-center q-mr-xs">
-              <img :src="getLogo(btn.id)" style="height: 30px" />
+              <img :src="getLogo(btn.id)" height="30" />
             </div>
             <TI4Icon v-if="showTI4Icon(button, btn)" type="tech" :name="btn.name" />
             <q-item-label>{{ btn.name }}</q-item-label>
