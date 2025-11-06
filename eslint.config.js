@@ -47,6 +47,11 @@ export default defineConfigWithVueTs(
 
   {
     languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname,
+        extraFileExtensions: ['.vue'],
+      },
       ecmaVersion: 'latest',
       sourceType: 'module',
 

@@ -30,6 +30,7 @@ export type Faction = {
   startingUnits: Array<StartingUnit>;
   units: Array<Unit>;
   breakthroughs: Array<Breakthrough>;
+  components: Array<FactionComponent>;
 };
 
 export type Planet = {
@@ -224,5 +225,15 @@ export type Breakthrough = {
   factionId: number;
   unitId?: number;
   unit: Unit;
+  notes?: Note[];
+};
+
+export type FactionComponent = {
+  id: number;
+  factionId: number;
+  type: string;
+  name: string;
+  description: string;
+  quantity: number;
   notes?: Note[];
 };
