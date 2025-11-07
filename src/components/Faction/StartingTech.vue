@@ -13,7 +13,7 @@
         {{ tech.name }}
       </div>
     </div>
-    <div v-else class="q-px-md">N/A</div>
+    <div v-else class="row">N/A</div>
   </section>
 </template>
 
