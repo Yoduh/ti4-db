@@ -1,8 +1,8 @@
 <template>
   <section class="q-mb-xl">
     <h5 class="q-mt-lg q-mb-sm">Faction Technology</h5>
-    <template v-if="nonUnitTech.length > 0">
-      <div v-for="tech in nonUnitTech" :key="tech.id" class="q-mb-md">
+    <div class="row" v-if="nonUnitTech.length > 0">
+      <div v-for="tech in nonUnitTech" :key="tech.id" class="col-12 col-md-8 q-mb-md">
         <div v-if="tech.techType !== 'Unit'">
           <div class="row items-center text-h6">
             <TI4Icon v-if="tech.techType !== 'Unit'" type="tech" :name="tech.techType" />
@@ -33,8 +33,10 @@
           </div>
         </div>
       </div>
-    </template>
-    <div v-else><strong class="text-h6">None</strong></div>
+    </div>
+    <div v-else class="row">
+      <strong class="text-h6">None</strong>
+    </div>
   </section>
 </template>
 

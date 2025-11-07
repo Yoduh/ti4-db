@@ -1,22 +1,24 @@
 <template>
   <section class="q-mb-xl">
     <h5 class="q-mt-lg q-mb-sm">Faction Abilities</h5>
-    <div v-for="ability in abilities" :key="ability.id" class="q-mb-md">
-      <div class="flex items-center text-h6">
-        <strong>{{ ability.name }}<span v-if="ability.isOmega"> &Omega;</span></strong>
-        <q-btn
-          v-if="ability.notes && ability.notes.length > 0"
-          @click="$emit('showNote', ability)"
-          color="amber-4"
-          round
-          dense
-          size="12px"
-          flat
-          icon="help_outline"
-        />
-      </div>
-      <div class="q-mb-sm">
-        {{ ability.description }}
+    <div class="row">
+      <div v-for="ability in abilities" :key="ability.id" class="col-12 col-md-8 q-mb-md">
+        <div class="flex items-center text-h6">
+          <strong>{{ ability.name }}<span v-if="ability.isOmega"> &Omega;</span></strong>
+          <q-btn
+            v-if="ability.notes && ability.notes.length > 0"
+            @click="$emit('showNote', ability)"
+            color="amber-4"
+            round
+            dense
+            size="12px"
+            flat
+            icon="help_outline"
+          />
+        </div>
+        <div class="q-mb-sm">
+          {{ ability.description }}
+        </div>
       </div>
     </div>
   </section>

@@ -11,7 +11,7 @@
           <StartingTech :faction-id="faction.id" :starting-tech="faction.startingTech" />
 
           <h5 class="q-mt-lg q-mb-sm">Starting Units</h5>
-          <div class="row">
+          <div class="row q-pl-md">
             <template v-if="faction.startingUnits.length > 0">
               <div v-for="unit in faction.startingUnits" :key="unit.id" class="q-px-md">
                 {{ unit.starting_units.quantity }} {{ unit.name }}
@@ -218,9 +218,6 @@ const { getImage } = useGetImage();
 </script>
 
 <style lang="scss" scoped>
-section > div {
-  padding-left: 2rem;
-}
 #firmamentObsidianToggle {
   position: fixed;
   bottom: 20px;

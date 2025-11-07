@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <section>
     <h5 class="q-mb-sm">Commodities: {{ props.commodities }}</h5>
 
     <h5 class="q-mt-lg q-mb-sm">Home Planets</h5>
     <div class="row">
       <div v-for="(planetTile, idx) in startingPlanets" :key="idx">
-        <div v-if="isMentak && planetTile[0]" class="q-px-md">
-          {{ getMentakSystem(planetTile[0]) }}
+        <div v-if="isKeleres && planetTile[0]" :class="{ 'q-pr-md': isKeleres }">
+          {{ getKeleresSystem(planetTile[0]) }}
         </div>
-        <div v-for="planet in planetTile" :key="planet.id" class="q-px-md">
+        <div v-for="planet in planetTile" :key="planet.id" :class="{ 'q-px-md': isKeleres }">
           <strong>
             {{ planet.name }}
             <span v-if="!!planet.resource || !!planet.influence"
@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -62,10 +62,10 @@ const startingPlanets = computed(() => {
       }, []),
   );
 });
-const isMentak = computed(() => {
+const isKeleres = computed(() => {
   return props.planets[0]?.factionId === 25;
 });
-function getMentakSystem(planet: Planet) {
+function getKeleresSystem(planet: Planet) {
   switch (planet.tile) {
     case 2:
       return 'The Xxcha Kingdom';

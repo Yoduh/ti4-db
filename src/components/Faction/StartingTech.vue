@@ -4,7 +4,7 @@
     <!-- Argent Flight -->
     <div v-if="factionId === 18" class="q-px-md">Choose TWO of the following:</div>
     <div class="row" v-if="startingTech.length > 0">
-      <div v-for="tech in startingTech" :key="tech.id" class="q-px-md">
+      <div v-for="tech in startingTech" :key="tech.id">
         <TI4Icon
           v-if="tech.techType !== 'Unit' && tech.techType !== 'Starting'"
           type="tech"

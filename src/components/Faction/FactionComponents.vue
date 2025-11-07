@@ -1,38 +1,41 @@
 <template>
   <section class="q-mb-xl" v-if="components.length > 0">
     <h5 class="q-mt-lg q-mb-sm">Faction Components</h5>
-    <q-table
-      v-if="mergedRows.length > 0"
-      :rows="mergedRows"
-      :columns="columns"
-      row-key="name"
-      flat
-      bordered
-      wrap-cells
-      hide-bottom
-    >
-      <template v-slot:body="props">
-        <q-tr :props="props">
-          <!-- "type" column (conditionally rendered for rowspan) -->
-          <q-td
-            v-if="props.row.showType"
-            :rowspan="props.row.rowspan"
-            style="vertical-align: middle"
-            :props="props"
-            key="type"
-            no-hover
-          >
-            {{ props.row.type }}
-          </q-td>
-          <!-- Other columns -->
-          <q-td :props="props" key="name">{{ props.row.name }}</q-td>
-          <q-td :props="props" key="description" style="white-space: pre-wrap">
-            {{ props.row.description }}
-          </q-td>
-          <q-td :props="props" key="quantity">{{ props.row.quantity }}</q-td>
-        </q-tr>
-      </template>
-    </q-table>
+    <div class="q-mb-lg row">
+      <q-table
+        v-if="mergedRows.length > 0"
+        :rows="mergedRows"
+        :columns="columns"
+        row-key="name"
+        class="col-12 col-lg-10"
+        flat
+        bordered
+        wrap-cells
+        hide-bottom
+      >
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <!-- "type" column (conditionally rendered for rowspan) -->
+            <q-td
+              v-if="props.row.showType"
+              :rowspan="props.row.rowspan"
+              style="vertical-align: middle"
+              :props="props"
+              key="type"
+              no-hover
+            >
+              {{ props.row.type }}
+            </q-td>
+            <!-- Other columns -->
+            <q-td :props="props" key="name">{{ props.row.name }}</q-td>
+            <q-td :props="props" key="description" style="white-space: pre-wrap">
+              {{ props.row.description }}
+            </q-td>
+            <q-td :props="props" key="quantity">{{ props.row.quantity }}</q-td>
+          </q-tr>
+        </template>
+      </q-table>
+    </div>
   </section>
 </template>
 
@@ -57,7 +60,8 @@ const allColumns: QTableColumn[] = [
     field: 'type',
     align: 'center',
     sortable: true,
-    headerStyle: 'white-space: nowrap;',
+    classes: 'component-cell',
+    headerClasses: 'component-header',
   },
   {
     name: 'name',
@@ -65,12 +69,16 @@ const allColumns: QTableColumn[] = [
     field: 'name',
     align: 'left',
     sortable: true,
+    classes: 'component-cell',
+    headerClasses: 'component-header',
   },
   {
     name: 'description',
     label: 'Description',
     field: 'description',
     align: 'left',
+    classes: 'component-cell',
+    headerClasses: 'component-header',
   },
   {
     name: 'quantity',
@@ -78,7 +86,8 @@ const allColumns: QTableColumn[] = [
     field: 'quantity',
     align: 'center',
     sortable: true,
-    headerStyle: 'white-space: nowrap;',
+    classes: 'component-cell',
+    headerClasses: 'component-header',
   },
 ];
 const noQuantities = computed(() => !props.components.some((c) => c.quantity !== null));
@@ -117,4 +126,8 @@ const mergedRows = computed(() => {
   return result;
 });
 </script>
-<style scoped></style>
+<style scoped>
+.component-cell {
+  font-size: 16px !important;
+}
+</style>
