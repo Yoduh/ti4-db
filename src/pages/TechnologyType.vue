@@ -65,7 +65,10 @@ watch(
       .get(`/technology/${newType}`)
       .then((res) => {
         techs.value = res.data as Technology[];
-        filteredTechs.value = res.data as Technology[];
+        techs.value = techs.value.map((t) => {
+          return { ...t, name: t.name.split(' Ω')[0] ?? '' };
+        });
+        filteredTechs.value = techs.value;
       })
       .catch((e) => console.error(e));
   },

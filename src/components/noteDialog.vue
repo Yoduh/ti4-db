@@ -37,23 +37,10 @@ const dialog = defineModel<boolean>({ default: false });
 
 const noteArrays = computed<Note[]>(() => {
   if (props.noteTexts) {
-    const arrs = [...props.noteTexts];
-    return arrs
-      .map((nt) => {
-        if (nt.parentNote) {
-          const parent = arrs.find((p) => {
-            return p.id === nt.parentNote;
-          });
-          if (parent && !parent.children) {
-            parent.children = [nt];
-          } else if (parent && parent.children) {
-            parent.children.push(nt);
-          }
-        }
-        if (!nt.parentNote) return nt;
-        else return undefined;
-      })
-      .filter((nt): nt is Note => !!nt);
+    const parents = props.noteTexts.filter((n) => !n.parentNote);
+    return parents.map((p) => {
+      return { ...p, children: props.noteTexts?.filter((n) => n.parentNote === p.id) ?? [] };
+    });
   } else return [];
 });
 </script>

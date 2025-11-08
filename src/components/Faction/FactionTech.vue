@@ -6,7 +6,7 @@
         <div v-if="tech.techType !== 'Unit'">
           <div class="row items-center text-h6">
             <TI4Icon v-if="tech.techType !== 'Unit'" type="tech" :name="tech.techType" />
-            <strong>{{ tech.name }}<span v-if="tech.isOmega"> &Omega;</span></strong>
+            <strong>{{ tech.name }}</strong>
             <q-btn
               v-if="tech.notes && tech.notes.length > 0"
               @click="$emit('showNote', tech)"

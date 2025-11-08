@@ -8,7 +8,7 @@
         class="col-12 col-md-8 q-mb-md"
       >
         <div class="flex items-center text-h6">
-          <strong>{{ promissory.name }}<span v-if="promissory.isOmega"> &Omega;</span></strong
+          <strong>{{ promissory.name }}</strong
           ><q-btn
             v-if="promissory.notes && promissory.notes.length > 0"
             @click="$emit('showNote', promissory)"
