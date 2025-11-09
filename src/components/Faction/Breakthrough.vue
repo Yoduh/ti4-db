@@ -31,7 +31,7 @@
           {{ breakthrough.description }}
         </div>
         <div v-if="breakthrough.unit" class="row q-mt-lg">
-          <div class="col col-sm-9 col-md-8 col-lg-5">
+          <div class="col">
             <strong class="text-h6">{{ breakthrough.name }} (Flipped)</strong>
             <div class="row">
               <TI4Icon v-if="breakthrough.synergy1" type="tech" :name="breakthrough.synergy1" />

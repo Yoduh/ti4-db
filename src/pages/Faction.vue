@@ -42,14 +42,7 @@
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Units</h5>
-      <div v-for="unit in faction.units" :key="unit.id" class="q-mb-lg row">
-        <UnitTable
-          :unit="unit"
-          :prereqs="getUnitPrereqs(unit)"
-          class="col col-sm-9 col-md-8 col-lg-5"
-          @showNote="showNote(unit)"
-        />
-      </div>
+      <UnitPanel :units="faction.units" :tech="faction.factionTech" />
     </section>
     <FactionComponents :components="faction.components" />
 
@@ -71,10 +64,9 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { Faction, Unit, Note } from 'components/models';
+import type { Faction, Note } from 'components/models';
 import { api } from '@/boot/axios';
 import NoteDialog from '@/components/noteDialog.vue';
-import UnitTable from '@/components/unitTable.vue';
 import FactionLeaderPanel from '@/components/FactionLeaderPanel.vue';
 import { useGetImage } from '@/composables/useGetImage';
 import { useScrollMemory } from '@/composables/useScrollMemory';
@@ -86,6 +78,7 @@ import FactionPromissoryNote from 'src/components/Faction/FactionPromissoryNote.
 import FactionTech from 'src/components/Faction/FactionTech.vue';
 import Breakthrough from 'src/components/Faction/Breakthrough.vue';
 import FactionComponents from 'src/components/Faction/FactionComponents.vue';
+import UnitPanel from 'src/components/UnitPanel.vue';
 
 useScrollMemory();
 const props = defineProps<{
@@ -106,14 +99,6 @@ watch(
   },
   { immediate: true },
 );
-
-function getUnitPrereqs(unit: Unit) {
-  const tech = faction.value?.factionTech.find((ft) => {
-    return ft.name === unit.name;
-  });
-  if (tech) return tech.prereqs;
-  else return [];
-}
 
 const noteDialog = ref(false);
 const noteName = ref('');

@@ -20,7 +20,7 @@
     </q-btn-group>
     <div v-for="objective in filteredObjectives" :key="objective.id" class="q-mb-xl">
       <h5 class="q-mb-none">
-        {{ objective.name }}<span v-if="objective.isOmega"> &Omega;</span>
+        {{ objective.name }}
         <q-btn
           v-if="objective.notes && objective.notes.length > 0"
           @click="showNote(objective)"
