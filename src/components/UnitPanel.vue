@@ -15,11 +15,7 @@
       </q-tabs>
       <q-tab-panels v-model="tabs[i]" animated class="unit-tab-panels">
         <q-tab-panel v-for="unit in unitGroup" :key="unit.id" :name="unit.id" class="q-px-none">
-          <UnitTable
-            :unit="unit"
-            :prereqs="getUnitPrereqs(unit)"
-            @showNote="$emit('showNote', unit)"
-          />
+          <UnitTable :unit="unit" :prereqs="getUnitPrereqs(unit)" />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -41,7 +37,6 @@ const props = defineProps({
     required: true,
   },
 });
-defineEmits(['showNote']);
 
 const tabs = ref<Array<number>>([]);
 const groupedUnits = ref<Array<Array<Unit>>>([]);

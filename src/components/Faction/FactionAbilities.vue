@@ -5,16 +5,7 @@
       <div v-for="ability in abilities" :key="ability.id" class="col-12 col-md-8 q-mb-md">
         <div class="flex items-center text-h6">
           <strong>{{ ability.name }}<span v-if="ability.isOmega"> &Omega;</span></strong>
-          <q-btn
-            v-if="ability.notes && ability.notes.length > 0"
-            @click="$emit('showNote', ability)"
-            color="amber-4"
-            round
-            dense
-            size="12px"
-            flat
-            icon="help_outline"
-          />
+          <NoteButton :c="ability" />
         </div>
         <div class="q-mb-sm">
           {{ ability.description }}
@@ -26,6 +17,7 @@
 
 <script setup lang="ts">
 import type { Ability } from '@/components/models';
+import NoteButton from '@/components/NoteButton.vue';
 
 defineProps({
   abilities: {
@@ -33,8 +25,6 @@ defineProps({
     default: () => [],
   },
 });
-
-defineEmits(['showNote']);
 </script>
 
 <style lang="scss" scoped></style>

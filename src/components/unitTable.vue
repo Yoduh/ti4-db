@@ -21,16 +21,7 @@
           <div class="column col-auto">
             <div class="row items-center">
               <div class="text-h6">{{ unit.name }}</div>
-              <q-btn
-                v-if="unit.notes && unit.notes.length > 0"
-                @click="$emit('showNote')"
-                color="amber-4"
-                round
-                dense
-                size="12px"
-                flat
-                icon="help_outline"
-              />
+              <NoteButton :c="unit" />
             </div>
             <div class="text-caption text-italic">
               {{ unit.subtype ? unit.subtype : unit.type }}
@@ -49,12 +40,13 @@
           </div>
         </div>
         <div>
-          <ul v-if="unit.unitAbility && unit.unitAbility.length > 0" class="q-ma-none">
-            <li v-for="ability in unit.unitAbility" :key="ability.id">
+          <div v-if="unit.unitAbility && unit.unitAbility.length > 0" class="q-ma-none">
+            <div class="unit-ability q-ml-lg" v-for="ability in unit.unitAbility" :key="ability.id">
+              <span v-if="isUnitAbility(ability.name)">✦ </span>
               <span v-if="!ability.description">{{ ability.name }}</span>
               <span v-else>{{ ability.description }}</span>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </template>
@@ -66,6 +58,7 @@ import type { Unit } from 'components/models';
 import type { QTableProps } from 'quasar';
 import TI4Icon from 'components/ti4Icon.vue';
 import { useGetImage } from '@/composables/useGetImage';
+import NoteButton from '@/components/NoteButton.vue';
 
 withDefaults(
   defineProps<{
@@ -110,6 +103,18 @@ function toTitleCase(str: string) {
   return str.replace(/\w\S*/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
+}
+
+function isUnitAbility(name: string) {
+  const unitAbilities = [
+    'Sustain Damage',
+    'Anti-Fighter Barrage',
+    'Production',
+    'Planetary Shield',
+    'Bombardment',
+    'Space Cannon',
+  ];
+  return unitAbilities.some((a) => name.startsWith(a));
 }
 </script>
 

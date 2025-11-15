@@ -21,16 +21,7 @@
     <div v-for="card in filteredCards" :key="card.id" class="q-mb-xl">
       <h5 class="q-mb-none">
         <TI4Icon type="trait" :name="card.trait" /><span class="q-ml-sm">{{ card.name }}</span>
-        <q-btn
-          v-if="card.notes && card.notes.length > 0"
-          @click="showNote(card)"
-          color="amber-4"
-          round
-          dense
-          size="12px"
-          flat
-          icon="help_outline"
-        />
+        <NoteButton :c="card" />
       </h5>
       <div class="text-caption">Number in {{ card.trait }} deck: {{ card.numAvailable }}</div>
       <div v-if="!card.effect.includes('CROWN')">{{ card.effect }}</div>
@@ -38,7 +29,7 @@
         <span v-for="(half, i) in replaceCrown(card.effect)" :key="i">
           <q-img
             v-if="i === 1"
-            src="../assets/CrownSymbol.webp"
+            src="@/assets/CrownSymbol.webp"
             height="15px"
             width="15px"
             fit="contain"
@@ -48,15 +39,14 @@
       </div>
     </div>
   </div>
-  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
 import { api } from '@/boot/axios';
 import { computed, ref } from 'vue';
-import type { ExplorationCard, Note } from 'components/models';
-import NoteDialog from 'components/noteDialog.vue';
+import type { ExplorationCard } from '@/components/models';
 import TI4Icon from '@/components/ti4Icon.vue';
+import NoteButton from '@/components/NoteButton.vue';
 
 type toggleBtn = {
   label: string;
@@ -126,15 +116,6 @@ function toggle(option: toggleBtn) {
 
 function replaceCrown(effect: string) {
   return effect.split('CROWN');
-}
-
-const noteDialog = ref(false);
-const noteName = ref('');
-const noteTexts = ref<Note[] | undefined>([]);
-function showNote(item: ExplorationCard) {
-  noteName.value = item.name;
-  noteTexts.value = item.notes;
-  noteDialog.value = true;
 }
 </script>
 

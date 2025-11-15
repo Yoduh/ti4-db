@@ -66,6 +66,7 @@ export type PromissoryNote = {
   isOmega: boolean;
   pok: boolean;
   notes?: Note[];
+  faction?: { name: string; id: number };
 };
 
 export type Leader = {
@@ -237,3 +238,9 @@ export type FactionComponent = {
   quantity: number;
   notes?: Note[];
 };
+
+export interface NoteSupportingComponent {
+  name: string;
+  id: number;
+  notes?: Note[];
+}

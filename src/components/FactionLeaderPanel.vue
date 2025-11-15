@@ -22,16 +22,7 @@
         <div class="flex items-center text-h6">
           <strong style="text-transform: uppercase">{{ leader.type }}</strong
           >: {{ leader.name }}
-          <q-btn
-            v-if="leader.notes && leader.notes.length > 0"
-            @click="emit('noteTrigger', leader)"
-            color="amber-4"
-            round
-            dense
-            size="12px"
-            flat
-            icon="help_outline"
-          />
+          <NoteButton :c="leader" />
         </div>
         <img :src="getImage(leader.type.toLowerCase(), leader.factionId, j)" />
         <div>UNLOCK: {{ leader.criteria }}</div>
@@ -47,6 +38,7 @@
 import { ref, watch } from 'vue';
 import type { Leader } from './models';
 import { useGetImage } from '@/composables/useGetImage';
+import NoteButton from '@/components/NoteButton.vue';
 
 const props = defineProps({
   leaders: {
@@ -55,7 +47,6 @@ const props = defineProps({
   },
 });
 const { getImage } = useGetImage();
-const emit = defineEmits(['noteTrigger']);
 
 const tabs = ref<Array<number>>([]);
 const groupedLeaders = ref<Array<Array<Leader>>>([]);

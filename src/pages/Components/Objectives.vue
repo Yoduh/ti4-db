@@ -21,16 +21,7 @@
     <div v-for="objective in filteredObjectives" :key="objective.id" class="q-mb-xl">
       <h5 class="q-mb-none">
         {{ objective.name }}
-        <q-btn
-          v-if="objective.notes && objective.notes.length > 0"
-          @click="showNote(objective)"
-          color="amber-4"
-          round
-          dense
-          size="12px"
-          flat
-          icon="help_outline"
-        />
+        <NoteButton :c="objective" />
       </h5>
       <div>
         <strong
@@ -46,14 +37,13 @@
       <div>{{ objective.condition }}</div>
     </div>
   </div>
-  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
 import { api } from '@/boot/axios';
 import { ref, computed } from 'vue';
-import type { Objective, Note } from 'components/models';
-import NoteDialog from 'components/noteDialog.vue';
+import type { Objective } from 'components/models';
+import NoteButton from '@/components/NoteButton.vue';
 
 const objectives = ref<Objective[]>([]);
 api
@@ -111,15 +101,6 @@ function toggle(option: toggleBtn) {
       t.stage === option.stage ? (t.color = t.onColor) : (t.color = offColor),
     );
   }
-}
-
-const noteDialog = ref(false);
-const noteName = ref('');
-const noteTexts = ref<Note[] | undefined>([]);
-function showNote(item: Objective) {
-  noteName.value = item.name;
-  noteTexts.value = item.notes;
-  noteDialog.value = true;
 }
 
 function toTitleCase(str: string) {

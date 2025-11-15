@@ -13,25 +13,15 @@
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel v-for="tech in renamedTechs" :key="tech.id" :name="tech.id">
-        <h5 class="q-my-none" v-if="!tech.unit">
+        <div class="q-my-none text-h6" v-if="!tech.unit">
           {{ tech.name }}
-          <q-btn
-            v-if="tech.notes && tech.notes.length > 0"
-            @click="emit('noteTrigger', tech)"
-            color="amber-4"
-            round
-            dense
-            size="12px"
-            flat
-            icon="help_outline"
-          />
-        </h5>
+          <NoteButton :c="tech" />
+        </div>
         <div v-if="tech.unit" class="q-mb-lg row">
           <UnitTable
             :unit="tech.unit"
             :prereqs="tech.prereqs"
             class="col col-sm-9 col-md-8 col-lg-5"
-            @click="emit('noteTrigger', tech.unit)"
           />
         </div>
         <div v-else>
@@ -54,25 +44,15 @@
   </div>
   <div v-else>
     <div v-for="tech in techs" :key="tech.id">
-      <h5 class="q-my-none" v-if="!tech.unit">
+      <div class="q-my-none text-h6" v-if="!tech.unit">
         {{ tech.name }}
-        <q-btn
-          v-if="tech.notes && tech.notes.length > 0"
-          @click="emit('noteTrigger', tech)"
-          color="amber-4"
-          round
-          dense
-          size="12px"
-          flat
-          icon="help_outline"
-        />
-      </h5>
+        <NoteButton :c="tech" />
+      </div>
       <div v-if="tech.unit" class="q-mb-lg row">
         <UnitTable
           :unit="tech.unit"
           :prereqs="tech.prereqs"
           class="col col-sm-9 col-md-8 col-lg-5"
-          @click="emit('noteTrigger', tech.unit)"
         />
       </div>
       <div v-else>
@@ -99,6 +79,7 @@ import { computed, ref, watch } from 'vue';
 import type { Technology } from './models';
 import TI4Icon from '@/components/ti4Icon.vue';
 import UnitTable from '@/components/unitTable.vue';
+import NoteButton from '@/components/NoteButton.vue';
 
 const props = defineProps({
   techs: {
@@ -106,7 +87,6 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(['noteTrigger']);
 
 const tab = ref<number>();
 const renamedTechs = computed(() => {

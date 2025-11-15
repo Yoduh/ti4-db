@@ -32,33 +32,33 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/components/agendas',
         name: 'Agendas',
-        component: () => import('pages/Agendas.vue'),
+        component: () => import('pages/Components/Agendas.vue'),
       },
       {
         path: '/components/action-cards',
         name: 'ActionCards',
-        component: () => import('pages/ActionCards.vue'),
+        component: () => import('pages/Components/ActionCards.vue'),
       },
       {
         path: '/components/objectives',
         name: 'Objectives',
-        component: () => import('pages/Objectives.vue'),
+        component: () => import('pages/Components/Objectives.vue'),
       },
       {
         path: '/components/exploration-cards',
         name: 'ExplorationCards',
-        component: () => import('pages/ExplorationCards.vue'),
+        component: () => import('pages/Components/ExplorationCards.vue'),
       },
       {
         path: '/components/strategy-cards',
         name: 'StrategyCards',
-        component: () => import('pages/StrategyCards.vue'),
+        component: () => import('pages/Components/StrategyCards.vue'),
         props: true,
       },
       {
         path: '/components/relics',
         name: 'Relics',
-        component: () => import('pages/Relics.vue'),
+        component: () => import('pages/Components/Relics.vue'),
         props: true,
       },
       {
@@ -83,6 +83,12 @@ const routes: RouteRecordRaw[] = [
         path: '/technology/:techType',
         name: 'TechnologyType',
         component: () => import('pages/TechnologyType.vue'),
+        props: true,
+      },
+      {
+        path: '/components/promissory-notes',
+        name: 'PromissoryNotes',
+        component: () => import('pages/Components/PromissoryNotes.vue'),
         props: true,
       },
     ],

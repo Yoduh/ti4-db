@@ -42,6 +42,7 @@
         </div>
       </div>
     </q-page-container>
+    <NoteDialog />
   </q-layout>
 </template>
 
@@ -51,6 +52,7 @@ import Toolbar from 'components/Toolbar.vue';
 import { onClickOutside } from '@vueuse/core';
 import type { NavButton } from '@/components/models';
 import { useQuasar } from 'quasar';
+import NoteDialog from '@/components/NoteDialog.vue';
 
 const $q = useQuasar();
 const drawer = ref(false);

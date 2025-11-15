@@ -26,7 +26,7 @@
             }`"
           >
             <div style="width: 35px" class="flex justify-center items-center q-mr-xs">
-              <img :src="getLogo(btn.id)" height="30" />
+              <img :src="getImage('logo', btn.id)" class="logo" />
             </div>
             <TI4Icon v-if="showTI4Icon(button, btn)" type="tech" :name="btn.name" />
             <q-item-label>{{ btn.name }}</q-item-label>
@@ -57,7 +57,7 @@
             }`"
           >
             <div style="width: 35px" class="flex justify-center items-center q-mr-xs">
-              <img :src="getLogo(btn.id)" height="30" />
+              <img :src="getImage('logo', btn.id)" class="logo" />
             </div>
             <TI4Icon v-if="showTI4Icon(button, btn)" type="tech" :name="btn.name" />
             <q-item-label>{{ btn.name }}</q-item-label>
@@ -82,6 +82,7 @@ import type { NavButton } from './models';
 import { ref } from 'vue';
 import { QIcon } from 'quasar';
 import type { Faction } from '@/components/models';
+import { useGetImage } from '@/composables/useGetImage';
 
 type ListButton = {
   id: number;
@@ -97,6 +98,8 @@ const props = defineProps<{
 
 const bookmarks = ref<ListButton[][]>([]);
 const factionBtns = ref<ListButton[][]>([]);
+
+const { getImage } = useGetImage();
 
 if (props.button.endpoint) {
   api
@@ -147,10 +150,6 @@ function removeBookmark(evt: PointerEvent, btn: ListButton[], index: number) {
   bookmarks.value.splice(index, 1);
   localStorage.setItem('bookmarks', JSON.stringify(bookmarks.value));
 }
-
-function getLogo(id: number) {
-  return `${process.env.API_URL}/images/${id}/logo.webp`;
-}
 </script>
 
 <style lang="scss" scoped>
@@ -181,5 +180,10 @@ function getLogo(id: number) {
 }
 .body--dark .hoverable:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+.logo {
+  height: 30px;
+  width: 100%;
+  object-fit: contain;
 }
 </style>

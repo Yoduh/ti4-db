@@ -8,17 +8,8 @@
         class="col-12 col-md-8 q-mb-md"
       >
         <div class="flex items-center text-h6">
-          <strong>{{ promissory.name }}</strong
-          ><q-btn
-            v-if="promissory.notes && promissory.notes.length > 0"
-            @click="$emit('showNote', promissory)"
-            color="amber-4"
-            round
-            dense
-            size="12px"
-            flat
-            icon="help_outline"
-          />
+          <strong>{{ promissory.name }}</strong>
+          <NoteButton :c="promissory" />
         </div>
         <div class="q-mb-sm">
           {{ promissory.description }}
@@ -30,6 +21,7 @@
 
 <script setup lang="ts">
 import type { PromissoryNote } from '@/components/models';
+import NoteButton from '@/components/NoteButton.vue';
 
 defineProps({
   promissoryNotes: {
@@ -37,8 +29,6 @@ defineProps({
     default: () => [],
   },
 });
-
-defineEmits(['showNote']);
 </script>
 
 <style scoped></style>

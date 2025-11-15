@@ -16,16 +16,7 @@
     <div v-for="card in filteredCards" :key="card.id" class="q-mb-xl">
       <h5 class="q-mb-none" :class="`text-${card.name.toLowerCase()}`">
         {{ card.initiative }}. {{ card.name }}
-        <q-btn
-          v-if="card.notes && card.notes.length > 0"
-          @click="showNote(card)"
-          color="amber-4"
-          round
-          dense
-          size="12px"
-          flat
-          icon="help_outline"
-        />
+        <NoteButton :c="card" />
       </h5>
       <div class="q-ml-lg">PRIMARY</div>
       <div class="q-ml-xl" v-for="(effect, idx) in splitEffects(card.primary)" :key="idx">
@@ -37,14 +28,13 @@
       </div>
     </div>
   </div>
-  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
 import { api } from '@/boot/axios';
 import { ref } from 'vue';
-import type { StrategyCard, Note } from 'components/models';
-import NoteDialog from 'components/noteDialog.vue';
+import type { StrategyCard } from '@/components/models';
+import NoteButton from '@/components/NoteButton.vue';
 
 const cards = ref<StrategyCard[]>([]);
 const filteredCards = ref<StrategyCard[]>([]);
@@ -64,15 +54,6 @@ function filterCards() {
   filteredCards.value = filteredCards.value.filter((a) =>
     a.name.toLowerCase().includes(filter.value.toLocaleLowerCase()),
   );
-}
-
-const noteDialog = ref(false);
-const noteName = ref('');
-const noteTexts = ref<Note[] | undefined>([]);
-function showNote(item: StrategyCard) {
-  noteName.value = item.name;
-  noteTexts.value = item.notes;
-  noteDialog.value = true;
 }
 
 function splitEffects(effect: string) {

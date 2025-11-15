@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="dialog">
+  <q-dialog v-model="noteDialog">
     <q-card>
       <q-card-section>
         <div class="text-h6">{{ noteName }}</div>
@@ -27,19 +27,16 @@
 
 <script setup lang="ts">
 import type { Note } from './models';
-import { computed } from 'vue';
+import { computed, toRefs } from 'vue';
+import { noteStore } from '@/store';
 
-const props = defineProps<{
-  noteName: string;
-  noteTexts: Note[] | undefined;
-}>();
-const dialog = defineModel<boolean>({ default: false });
+const { noteName, noteTexts, noteDialog } = toRefs(noteStore);
 
 const noteArrays = computed<Note[]>(() => {
-  if (props.noteTexts) {
-    const parents = props.noteTexts.filter((n) => !n.parentNote);
+  if (noteTexts.value) {
+    const parents = noteTexts.value.filter((n) => !n.parentNote);
     return parents.map((p) => {
-      return { ...p, children: props.noteTexts?.filter((n) => n.parentNote === p.id) ?? [] };
+      return { ...p, children: noteTexts.value?.filter((n) => n.parentNote === p.id) ?? [] };
     });
   } else return [];
 });

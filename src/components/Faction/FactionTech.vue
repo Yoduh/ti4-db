@@ -7,16 +7,7 @@
           <div class="row items-center text-h6">
             <TI4Icon v-if="tech.techType !== 'Unit'" type="tech" :name="tech.techType" />
             <strong>{{ tech.name }}</strong>
-            <q-btn
-              v-if="tech.notes && tech.notes.length > 0"
-              @click="$emit('showNote', tech)"
-              color="amber-4"
-              round
-              dense
-              size="12px"
-              flat
-              icon="help_outline"
-            />
+            <NoteButton :c="tech" />
           </div>
           <div class="q-mb-sm">
             {{ tech.description }}
@@ -44,6 +35,7 @@
 import type { Technology } from '@/components/models';
 import TI4Icon from '@/components/ti4Icon.vue';
 import { computed } from 'vue';
+import NoteButton from '@/components/NoteButton.vue';
 
 const props = defineProps({
   factionTech: {
@@ -51,8 +43,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
-defineEmits(['showNote']);
 
 const nonUnitTech = computed(
   () =>

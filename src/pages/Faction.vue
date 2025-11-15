@@ -26,16 +26,16 @@
       </div>
     </section>
 
-    <FactionAbilities :abilities="faction.abilities" @show-note="showNote" />
-    <FactionPromissoryNote :promissory-notes="faction.promissory_notes" @show-note="showNote" />
-    <FactionTech :faction-tech="faction.factionTech" @show-note="showNote" />
-    <Breakthrough :breakthroughs="faction.breakthroughs" @show-note="showNote" />
+    <FactionAbilities :abilities="faction.abilities" />
+    <FactionPromissoryNote :promissory-notes="faction.promissory_notes" />
+    <FactionTech :faction-tech="faction.factionTech" />
+    <Breakthrough :breakthroughs="faction.breakthroughs" />
 
     <section class="q-mb-xl">
       <h5 class="q-mt-lg q-mb-sm">Faction Leaders</h5>
       <div class="row">
         <div class="col col-sm-9 col-lg-8">
-          <FactionLeaderPanel :leaders="faction.leaders" @noteTrigger="(e) => showNote(e)" />
+          <FactionLeaderPanel :leaders="faction.leaders" />
         </div>
       </div>
     </section>
@@ -59,14 +59,12 @@
       <q-img :src="getImage('logo', faction.id === 28 ? 29 : 28)" />
     </q-btn>
   </div>
-  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { Faction, Note } from 'components/models';
+import type { Faction } from 'components/models';
 import { api } from '@/boot/axios';
-import NoteDialog from '@/components/noteDialog.vue';
 import FactionLeaderPanel from '@/components/FactionLeaderPanel.vue';
 import { useGetImage } from '@/composables/useGetImage';
 import { useScrollMemory } from '@/composables/useScrollMemory';
@@ -100,106 +98,7 @@ watch(
   { immediate: true },
 );
 
-const noteDialog = ref(false);
-const noteName = ref('');
-const noteTexts = ref<Note[] | undefined>([]);
-function showNote(item: Partial<{ name: string; notes: Note[] }>) {
-  noteName.value = item.name as string;
-  noteTexts.value = item.notes;
-  noteDialog.value = true;
-}
-
 const { getImage } = useGetImage();
-
-// Dammit Keleres, only for you...
-// const keleresNote: { name: string; notes: Note[] } = {
-//   name: 'Custodia Vigilia',
-//   notes: [
-//     {
-//       id: 1,
-//       parentNote: null,
-//       text: 'The Custodia Vigilia planet card is gained exhausted.',
-//     },
-//     {
-//       id: 2,
-//       parentNote: null,
-//       text: 'Units cannot be placed on Custodia Vigilia.',
-//     },
-//     {
-//       id: 3,
-//       parentNote: null,
-//       text: 'Custodia Vigilia is not adjacent to any system, unit, player or other planet.',
-//     },
-//     {
-//       id: 4,
-//       parentNote: null,
-//       text: 'The Keleres player cannot lose control of Custodia Vigilia.',
-//       children: [
-//         {
-//           id: 100,
-//           parentNote: 4,
-//           text: 'The Keleres player cannot be eliminated once they control Custodia Vigilia.',
-//         },
-//       ],
-//     },
-//     {
-//       id: 5,
-//       parentNote: null,
-//       text: 'Custodia Vigilia may be used to qualify for objectives, if it meets any other requirements listed.',
-//       children: [
-//         {
-//           id: 101,
-//           parentNote: 5,
-//           text: 'Custodia Vigilia cannot be used to qualify for any objective that requires planets in a system.',
-//         },
-//       ],
-//     },
-//     {
-//       id: 6,
-//       parentNote: null,
-//       text: 'Custodia Vigilia may be elected by any "elect planet" agendas. However, Custodia Vigilia may be immune to the effects of the agenda.',
-//     },
-//     {
-//       id: 7,
-//       parentNote: null,
-//       text: 'A player gains victory points from the Imperial strategy card only if they control Mecatol Rex. If they use the Imperial strategy card to score an objective, then they gain victory points from that objective, and not the Imperial strategy card.',
-//     },
-//     {
-//       id: 8,
-//       parentNote: null,
-//       text: 'The Keleres player may use a command token to perform the secondary of Imperial during the same strategic action that they gained that token.',
-//     },
-//     {
-//       id: 9,
-//       parentNote: null,
-//       text: 'When the Keleres player uses the Production ability of Custodia Vigilia, it is treated as though the Keleres player was using the Production abilitiy of one of their units on Mecatol Rex.',
-//       children: [
-//         {
-//           id: 102,
-//           parentNote: 9,
-//           text: 'This may trigger the abilities of the Sarween Tools technology, and other similar abilities.',
-//         },
-//         {
-//           id: 103,
-//           parentNote: 9,
-//           text: 'Custodia Vigilia counts towards scoring the Produce en Masse objective within the Mecatol Rex system.',
-//         },
-//       ],
-//     },
-//     {
-//       id: 10,
-//       parentNote: null,
-//       text: "The Ul player's Terraform faction promissory note may be attached to Custodia Vigilia.",
-//       children: [
-//         {
-//           id: 104,
-//           parentNote: 10,
-//           text: 'If Terraform is attached to Custodia Vigilia, it may be explored. However, Custodia Vigilia may be immune to the effects of some exploration cards.',
-//         },
-//       ],
-//     },
-//   ],
-// };
 </script>
 
 <style lang="scss" scoped>

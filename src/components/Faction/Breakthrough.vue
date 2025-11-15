@@ -9,16 +9,7 @@
       >
         <div class="items-center text-h6">
           <strong>{{ breakthrough.name }}</strong>
-          <q-btn
-            v-if="breakthrough.notes && breakthrough.notes.length > 0"
-            @click="$emit('showNote', breakthrough)"
-            color="amber-4"
-            round
-            dense
-            size="12px"
-            flat
-            icon="help_outline"
-          />
+          <NoteButton :c="breakthrough" />
         </div>
         <div class="row items-center">
           <TI4Icon v-if="breakthrough.synergy1" type="tech" :name="breakthrough.synergy1" />
@@ -56,6 +47,7 @@
 import type { Breakthrough, Unit } from '@/components/models';
 import TI4Icon from '@/components/ti4Icon.vue';
 import UnitTable from '@/components/unitTable.vue';
+import NoteButton from '@/components/NoteButton.vue';
 
 const props = defineProps({
   breakthroughs: {
@@ -63,8 +55,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-
-defineEmits(['showNote']);
 
 function getUnitPrereqs(unit: Unit) {
   if (props.breakthroughs.some((b) => b.unitId === unit.id)) {

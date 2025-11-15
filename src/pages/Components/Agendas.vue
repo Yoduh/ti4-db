@@ -16,16 +16,7 @@
     <div v-for="agenda in filteredAgendas" :key="agenda.id" class="q-mb-xl">
       <h5 class="q-mb-none">
         {{ agenda.name }}
-        <q-btn
-          v-if="agenda.notes && agenda.notes.length > 0"
-          @click="showNote(agenda)"
-          color="amber-4"
-          round
-          dense
-          size="12px"
-          flat
-          icon="help_outline"
-        />
+        <NoteButton :c="agenda" />
       </h5>
 
       <div class="text-bold text-agenda-title">
@@ -44,14 +35,13 @@
       </div>
     </div>
   </div>
-  <NoteDialog v-model="noteDialog" :noteName="noteName" :noteTexts="noteTexts" />
 </template>
 
 <script setup lang="ts">
 import { api } from '@/boot/axios';
 import { ref } from 'vue';
-import type { Agenda, Note } from 'components/models';
-import NoteDialog from 'components/noteDialog.vue';
+import type { Agenda } from 'components/models';
+import NoteButton from '@/components/NoteButton.vue';
 
 const agendas = ref<Agenda[]>([]);
 const filteredAgendas = ref<Agenda[]>([]);
@@ -70,15 +60,6 @@ function filterAgendas() {
   filteredAgendas.value = filteredAgendas.value.filter((a) =>
     a.name.toLowerCase().includes(filter.value.toLocaleLowerCase()),
   );
-}
-
-const noteDialog = ref(false);
-const noteName = ref('');
-const noteTexts = ref<Note[] | undefined>([]);
-function showNote(item: Agenda) {
-  noteName.value = item.name;
-  noteTexts.value = item.notes;
-  noteDialog.value = true;
 }
 </script>
 
