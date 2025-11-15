@@ -23,7 +23,7 @@
         <span v-for="(half, i) in replaceCrown(card.effect)" :key="i">
           <q-img
             v-if="i === 1"
-            src="../assets/CrownSymbol.webp"
+            src="@/assets/CrownSymbol.webp"
             height="15px"
             width="15px"
             fit="contain"
