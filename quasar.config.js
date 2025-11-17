@@ -115,7 +115,7 @@ export default defineConfig(() => {
     devServer: {
       // https: true
       open: true, // opens browser window automatically
-      port: 9001,
+      vueDevtools: true,
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework

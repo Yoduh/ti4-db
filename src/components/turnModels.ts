@@ -1,16 +1,19 @@
 export type Player = {
   id: number;
   name: string;
+  seat: number;
   color: string;
   faction: PlayerFaction | null;
   strategy: Strategy | null;
   speaker: boolean;
-  seat: number;
+  passed: boolean;
 };
 
 export type Strategy = {
   name: string;
-  order: number;
+  color: string;
+  initiative: number;
+  popped: boolean;
 };
 
 type PlayerFaction = {

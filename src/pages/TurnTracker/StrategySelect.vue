@@ -2,20 +2,10 @@
   <div class="row justify-center items-center q-mt-lg">
     <div class="column col-12">
       <div class="text-h4 text-center">Strategy Phase</div>
-      <div class="q-mt-lg text-italic">Select Speaker</div>
-      <q-select
-        v-model="speaker"
-        :options="players"
-        :option-label="speakerName"
-        @update:model-value="sortPlayers"
-        dense
-        emit-value
-        map-options
-        class="q-mb-xl"
-      />
+      <SpeakerSelect />
       <div class="row q-col-gutter-md q-mb-lg">
         <div
-          v-for="player in sortedPlayers"
+          v-for="player in players"
           :key="player.id"
           class="column col-12"
           :class="playerColumns()"
@@ -57,7 +47,8 @@ import { useTurnTrackerStore } from '@/stores/turnTracker';
 import { storeToRefs } from 'pinia';
 import type { Strategy } from '@/components/turnModels';
 import { type Player } from '@/components/turnModels';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
+import SpeakerSelect from 'src/components/TurnTracker/SpeakerSelect.vue';
 
 const turnStore = useTurnTrackerStore();
 const { players } = storeToRefs(turnStore);
@@ -70,29 +61,18 @@ function playerColumns() {
   }
 }
 
-const speaker = ref<Player | null>(turnStore.getSpeaker);
-function speakerName(player: Player) {
-  return player.name + ' - ' + player.faction?.name;
-}
-const sortedPlayers = ref([...players.value]);
-function sortPlayers(speaker: Player) {
-  turnStore.setSpeaker(speaker.id);
-  const start = speaker.seat;
-  sortedPlayers.value = [...players.value.slice(start - 1), ...players.value.slice(0, start - 1)];
-}
-
 const strategyCards: Strategy[] = [
-  { name: '1. Leadership', order: 1 },
-  { name: '2. Diplomacy', order: 2 },
-  { name: '3. Politics', order: 3 },
-  { name: '4. Construction', order: 4 },
-  { name: '5. Trade', order: 5 },
-  { name: '6. Warfare', order: 6 },
-  { name: '7. Technology', order: 7 },
-  { name: '8. Imperial', order: 8 },
+  { name: '1. Leadership', color: 'red-9', initiative: 1, popped: false },
+  { name: '2. Diplomacy', color: 'amber', initiative: 2, popped: false },
+  { name: '3. Politics', color: 'yellow-7', initiative: 3, popped: false },
+  { name: '4. Construction', color: 'green-9', initiative: 4, popped: false },
+  { name: '5. Trade', color: 'teal', initiative: 5, popped: false },
+  { name: '6. Warfare', color: 'blue-6', initiative: 6, popped: false },
+  { name: '7. Technology', color: 'blue-10', initiative: 7, popped: false },
+  { name: '8. Imperial', color: 'purple', initiative: 8, popped: false },
 ];
 const unselectedStrategyCards = computed(() => {
-  const selectedCards = sortedPlayers.value
+  const selectedCards = players.value
     .map((p) => p.strategy)
     .filter((c) => c?.name && c.name !== '');
   return strategyCards.filter((c) => selectedCards.findIndex((sc) => sc?.name === c.name) === -1);
@@ -107,7 +87,7 @@ function setPlayerStrategy(strategy: Strategy, sortedPlayer: Player) {
 function getStrategyCardImage(card: Strategy | null) {
   if (card) {
     const name = card.name.split('. ')[1];
-    return `${process.env.API_URL}images/strategy-cards/${name?.toLowerCase()}.webp`;
+    return `${process.env.API_URL}/images/strategy-cards/${name?.toLowerCase()}.webp`;
   } else {
     return undefined;
   }
