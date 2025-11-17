@@ -35,7 +35,7 @@
     class="q-mr-md"
     :class="{ 'q-px-lg': button.label === 'Rules' || button.label === 'Units' }"
     split
-    :to="`/${button.label.toLowerCase()}`"
+    :to="getRoute(button.label)"
     :color="button.color"
     rounded
     v-model="dropdown"
@@ -51,6 +51,8 @@ import { api } from 'boot/axios';
 import type { NavButton } from './models';
 import { ref } from 'vue';
 import type { QIcon } from 'quasar';
+import { useTurnTrackerStore } from '@/stores/turnTracker';
+import { State } from 'src/enums/turnState';
 
 type ListButton = {
   id: string;
@@ -77,6 +79,17 @@ if (props.button.endpoint) {
 
 function showTI4Icon(button: NavButton, listBtn: ListButton) {
   return button.label === 'Technology' && !['Unit', 'Faction'].includes(listBtn.name);
+}
+
+const turnStore = useTurnTrackerStore();
+function getRoute(label: string) {
+  if (label === 'Turn Tracker') {
+    let route = '/turn-tracker/';
+    if (turnStore.state === State.STRATEGY) route += 'strategy';
+    else if (turnStore.state === State.PLAYING) route += 'actions';
+    return route;
+  }
+  return label.toLowerCase().replace(' ', '-');
 }
 </script>
 

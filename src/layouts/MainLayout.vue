@@ -111,6 +111,13 @@ const buttons = reactive<NavButton[]>([
     disabled: false,
     splitBtn: false,
   },
+  {
+    id: 6,
+    label: 'Turn Tracker',
+    color: 'orange',
+    disabled: false,
+    splitBtn: false,
+  },
 ]);
 const mobileButtons = [...factionButtons, ...buttons];
 

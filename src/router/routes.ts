@@ -30,6 +30,27 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Rules.vue'),
       },
       {
+        path: '/turn-tracker',
+        name: 'Turn Tracker',
+        children: [
+          {
+            path: '',
+            name: 'Setup',
+            component: () => import('pages/TurnTracker/Setup.vue'),
+          },
+          {
+            path: 'strategy',
+            name: 'Strategy',
+            component: () => import('pages/TurnTracker/StrategySelect.vue'),
+          },
+          {
+            path: 'actions',
+            name: 'Playing',
+            component: () => import('pages/TurnTracker/Playing.vue'),
+          },
+        ],
+      },
+      {
         path: '/components/agendas',
         name: 'Agendas',
         component: () => import('pages/Components/Agendas.vue'),

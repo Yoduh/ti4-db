@@ -8,7 +8,7 @@
   >
     <div class="row items-center">
       <div class="col-2 col-sm-1 flex justify-end">
-        <img :src="component.img" height="80px" />
+          <img :src="component.img" height="80px" />
       </div>
       <div class="col q-ml-md">
         {{ component.name }}
