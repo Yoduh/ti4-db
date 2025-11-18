@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import type { Player } from 'src/components/turnModels';
 import { State } from '@/enums/turnState';
+import { useStorage } from '@vueuse/core';
 
 // const testData: Player[] = [
 //   {
@@ -67,21 +68,24 @@ import { State } from '@/enums/turnState';
 
 export const useTurnTrackerStore = defineStore('turnTracker', {
   state: () => ({
-    players: <Player[]>Array(6)
-      .fill(null)
-      .map((_, i) => ({
-        id: i,
-        name: '',
-        color: '',
-        strategy: { name: '', color: '', initiative: 1, popped: false },
-        speaker: false,
-        passed: false,
-        faction: null,
-        seat: i + 1,
-      })),
-    // players: testData,
-    state: State.SETUP,
-    currentTurn: 1,
+    players: useStorage(
+      'players',
+      <Player[]>Array(6)
+        .fill(null)
+        .map((_, i) => ({
+          id: i,
+          name: '',
+          color: '',
+          strategy: { name: '', color: '', initiative: 1, popped: false },
+          influence: 0,
+          speaker: false,
+          passed: false,
+          faction: null,
+          seat: i + 1,
+        })),
+    ),
+    gameState: useStorage<State>('gameState', State.SETUP),
+    currentTurn: useStorage('currentTurn', 1),
   }),
   getters: {
     getSpeaker(state) {

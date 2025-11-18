@@ -1,5 +1,6 @@
 export enum State {
   SETUP = 1,
-  STRATEGY, // Automatically 2
-  PLAYING, // Automatically 3
+  STRATEGY, // 2
+  PLAYING, // 3
+  AGENDA,
 }

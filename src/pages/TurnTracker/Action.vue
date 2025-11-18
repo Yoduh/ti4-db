@@ -2,6 +2,7 @@
   <div class="row justify-center items-center q-mt-lg">
     <div class="column col-12">
       <div class="text-h3 text-center q-mb-lg">Action Phase</div>
+      <SpeakerSelect class="q-mb-lg" />
       <div v-if="!allPassed" class="text-h4 text-center">Current Player</div>
       <div class="row justify-center items-center q-mb-md">
         <div class="shared-grid">
@@ -30,10 +31,10 @@
           </transition-group>
         </div>
       </div>
-      <div v-if="allPassed" class="row justify-center items-center">
+      <div v-if="allPassed" class="row justify-center items-center q-mb-xl">
         <div class="column">
           <div class="text-h4 q-mb-md">All players passed!</div>
-          <q-btn v-if="allPassed" label="Next Phase" color="primary" />
+          <q-btn v-if="allPassed" label="Next Phase" color="primary" to="/turn-tracker/agenda" />
         </div>
       </div>
     </div>
@@ -46,6 +47,7 @@ import { useTurnTrackerStore } from '@/stores/turnTracker';
 import { storeToRefs } from 'pinia';
 import type { Player } from '@/components/turnModels';
 import { computed } from 'vue';
+import SpeakerSelect from '@/components/TurnTracker/SpeakerSelect.vue';
 
 const turnStore = useTurnTrackerStore();
 const { players, currentTurn } = storeToRefs(turnStore);

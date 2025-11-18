@@ -2,7 +2,7 @@
   <div class="row justify-center items-center q-mt-lg">
     <div class="column col-12">
       <div class="text-h4 text-center">Strategy Phase</div>
-      <SpeakerSelect />
+      <SpeakerSelect class="q-my-md" />
       <div class="row q-col-gutter-md q-mb-lg">
         <div
           v-for="player in players"
@@ -13,7 +13,7 @@
           <q-card>
             <q-card-section class="flex justify-center" style="height: 200px">
               <img
-                v-if="player.strategy"
+                v-if="player.strategy?.name"
                 :src="getStrategyCardImage(player.strategy)"
                 style="object-fit: contain; height: 200px"
               />

@@ -5,6 +5,7 @@ export type Player = {
   color: string;
   faction: PlayerFaction | null;
   strategy: Strategy | null;
+  influence: 0;
   speaker: boolean;
   passed: boolean;
 };

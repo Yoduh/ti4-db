@@ -62,6 +62,7 @@ function updatePlayers(count: number) {
         speaker: false,
         faction: null,
         passed: false,
+        influence: 0,
         seat: players.value.length + 1,
       });
     }

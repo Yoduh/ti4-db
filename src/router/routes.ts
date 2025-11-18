@@ -41,12 +41,17 @@ const routes: RouteRecordRaw[] = [
           {
             path: 'strategy',
             name: 'Strategy',
-            component: () => import('pages/TurnTracker/StrategySelect.vue'),
+            component: () => import('pages/TurnTracker/Strategy.vue'),
           },
           {
             path: 'actions',
-            name: 'Playing',
-            component: () => import('pages/TurnTracker/Playing.vue'),
+            name: 'Action',
+            component: () => import('pages/TurnTracker/Action.vue'),
+          },
+          {
+            path: 'agenda',
+            name: 'Agenda',
+            component: () => import('pages/TurnTracker/Agenda.vue'),
           },
         ],
       },
