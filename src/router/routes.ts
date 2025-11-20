@@ -94,7 +94,7 @@ const routes: RouteRecordRaw[] = [
         props: true,
       },
       {
-        path: '/planets',
+        path: '/components/planets',
         name: 'Planets',
         component: () => import('pages/Planets.vue'),
         props: true,

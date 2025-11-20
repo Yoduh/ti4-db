@@ -86,11 +86,11 @@ function getRoute(label: string) {
   if (label === 'Turn Tracker') {
     let route = '/turn-tracker/';
     if (turnStore.gameState === State.STRATEGY) route += 'strategy';
-    else if (turnStore.gameState === State.PLAYING) route += 'actions';
+    else if (turnStore.gameState === State.ACTION) route += 'actions';
     else if (turnStore.gameState === State.AGENDA) route += 'agenda';
     return route;
   }
-  return label.toLowerCase().replace(' ', '-');
+  return '/' + label.toLowerCase().replace(' ', '-');
 }
 </script>
 

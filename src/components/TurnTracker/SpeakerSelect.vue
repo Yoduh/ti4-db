@@ -1,6 +1,5 @@
 <template>
   <div class="row items-center justify-center">
-    <div class="text-italic">Speaker</div>
     <q-select
       v-model="speaker"
       :options="players"
@@ -9,7 +8,10 @@
       dense
       emit-value
       map-options
+      outlined
+      label="Speaker"
       class="q-ml-md"
+      style="min-width: 150px"
     />
   </div>
 </template>

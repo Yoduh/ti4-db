@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-center items-center q-mt-lg">
+  <div class="row justify-center items-center q-mt-lg relative-position">
     <div class="column col-12">
       <div class="text-h3 text-center q-mb-lg">Action Phase</div>
       <SpeakerSelect class="q-mb-lg" />
@@ -34,10 +34,11 @@
       <div v-if="allPassed" class="row justify-center items-center q-mb-xl">
         <div class="column">
           <div class="text-h4 q-mb-md">All players passed!</div>
-          <q-btn v-if="allPassed" label="Next Phase" color="primary" to="/turn-tracker/agenda" />
+          <q-btn v-if="allPassed" label="Next Phase" color="primary" @click="next" />
         </div>
       </div>
     </div>
+    <q-btn label="Change Setup" class="setup-btn" outline color="red" to="/turn-tracker" />
   </div>
 </template>
 
@@ -48,21 +49,24 @@ import { storeToRefs } from 'pinia';
 import type { Player } from '@/components/turnModels';
 import { computed } from 'vue';
 import SpeakerSelect from '@/components/TurnTracker/SpeakerSelect.vue';
+import { useRouter } from 'vue-router';
+import { State } from '@/enums/turnState';
 
 const turnStore = useTurnTrackerStore();
 const { players, currentTurn } = storeToRefs(turnStore);
 turnStore.setFirstTurn();
 
-const initiativeOrder = [...players.value].sort((a, b) => {
-  if (a.strategy?.initiative && b.strategy?.initiative)
-    return a.strategy.initiative - b.strategy.initiative;
-  else return 0;
-});
+const initiativeOrder = computed(() =>
+  [...players.value].sort((a, b) => {
+    if (a.strategy?.initiative && b.strategy?.initiative)
+      return a.strategy.initiative - b.strategy.initiative;
+    else return 0;
+  }),
+);
 
-// const currentPlayer = ref();
 const playerTurnOrder = computed(() => {
-  const passedPlayers = initiativeOrder.filter((p) => p.passed);
-  const unpassedPlayers = initiativeOrder.filter((p) => !p.passed);
+  const passedPlayers = initiativeOrder.value.filter((p) => p.passed);
+  const unpassedPlayers = initiativeOrder.value.filter((p) => !p.passed);
   const currentIndex = unpassedPlayers.findIndex(
     (p) => p.strategy?.initiative === currentTurn.value,
   );
@@ -72,12 +76,8 @@ const playerTurnOrder = computed(() => {
       ...unpassedPlayers.slice(0, currentIndex),
       ...passedPlayers,
     ];
-
-    // currentPlayer.value = turns.splice(0, 1)[0];
-    // console.log(currentPlayer.value);
     return turns;
   } else {
-    // currentPlayer.value = null;
     return passedPlayers;
   }
 });
@@ -123,6 +123,17 @@ function endTurn() {
     currentTurn.value = initiative.value[(turnIndex + 1) % initiative.value.length] ?? 0;
   }
 }
+
+const router = useRouter();
+function next() {
+  router
+    .push('/turn-tracker/agenda')
+    .then(() => {
+      turnStore.setAgendaPhase();
+      turnStore.gameState = State.AGENDA;
+    })
+    .catch((e) => console.error(e));
+}
 </script>
 
 <style scoped>
@@ -143,7 +154,7 @@ function endTurn() {
 .shift-up-down-leave-active,
 .shift-down-up-enter-active,
 .shift-down-up-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 /* top transition: exit down then enter up */

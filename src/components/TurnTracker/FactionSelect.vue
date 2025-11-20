@@ -1,8 +1,9 @@
 <template>
-  <q-card class="full-width" v-if="player">
+  <q-card v-if="player">
     <q-card-section>
+      <div class="text-h6">SEAT {{ seat + 1 }}</div>
       <q-input v-model="player.name" label="Player Name" dense />
-      <q-select v-model="player.color" :options="colors" label="Color" dense>
+      <q-select v-model="player.color" :options="colors" label="Color" dense clearable>
         <template v-slot:option="scope">
           <q-item v-bind="scope.itemProps">
             <q-item-section class="text-center">
@@ -19,6 +20,7 @@
         v-model="player.faction"
         option-label="name"
         :options="factions"
+        clearable
         dense
       />
     </q-card-section>
@@ -26,17 +28,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Player } from '@/components/turnModels';
+import type { Player, SimpleFaction } from '@/components/turnModels';
 
 defineProps<{
-  factions: string[];
+  factions: SimpleFaction[];
+  colors: string[];
+  seat: number;
 }>();
 const player = defineModel<Player | undefined>();
-const colors = ref(['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple', 'Pink', 'Black']);
 
-function bgClass(name: string) {
-  return `bg-${name.toLowerCase()}`;
+function bgClass(name: string | null) {
+  return `bg-${name?.toLowerCase()}`;
 }
 </script>
 

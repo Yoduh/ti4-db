@@ -1,44 +1,54 @@
 <template>
-  <div class="row justify-center items-center q-mt-lg">
-    <div class="column col-12">
-      <div class="text-h4 text-center">Strategy Phase</div>
-      <SpeakerSelect class="q-my-md" />
-      <div class="row q-col-gutter-md q-mb-lg">
-        <div
-          v-for="player in players"
-          :key="player.id"
-          class="column col-12"
-          :class="playerColumns()"
-        >
-          <q-card>
-            <q-card-section class="flex justify-center" style="height: 200px">
-              <img
-                v-if="player.strategy?.name"
-                :src="getStrategyCardImage(player.strategy)"
-                style="object-fit: contain; height: 200px"
-              />
-            </q-card-section>
-            <q-card-section>
-              <q-select
-                :options="unselectedStrategyCards"
-                v-model="player.strategy"
-                @update:model-value="(s) => setPlayerStrategy(s, player)"
-                clearable
-                option-label="name"
-                label="Selected Strategy Card"
-                emit-value
-                map-options
-              />
-            </q-card-section>
-            <q-card-section class="q-pt-none text-center">
-              <div class="text-h4">{{ player.name }}</div>
-              <div>{{ player.faction?.name }}</div>
-            </q-card-section>
-          </q-card>
-        </div>
+  <div class="column items-center q-mt-lg relative-position">
+    <div class="text-h4 text-center">Strategy Phase</div>
+    <SpeakerSelect class="q-my-md" />
+    <div class="row q-col-gutter-md q-mb-lg">
+      <div
+        v-for="player in speakerOrder"
+        :key="player.id"
+        class="column col-12 items-stretch"
+        :class="playerColumns()"
+      >
+        <q-card class="full-width full-height">
+          <q-card-section class="flex justify-center items-center" style="height: 200px">
+            <div v-if="choosingPlayer === player.id" class="text-h3 text-center flash">
+              CHOOSE NOW
+            </div>
+            <img
+              v-if="player.strategy?.name"
+              :src="getStrategyCardImage(player.strategy)"
+              style="object-fit: contain; height: 200px"
+            />
+          </q-card-section>
+          <q-card-section>
+            <q-select
+              :options="unselectedStrategyCards"
+              v-model="player.strategy"
+              @update:model-value="(s) => setPlayerStrategy(s, player)"
+              clearable
+              option-label="name"
+              label="Strategy Card"
+              emit-value
+              map-options
+            />
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <div class="text-h4">{{ player.name }}</div>
+            <div>{{ player.faction?.name }}</div>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
-    <q-btn size="large" color="primary" label="Next" to="/turn-tracker/actions" class="q-mb-lg" />
+    <q-btn
+      size="large"
+      color="primary"
+      label="Next"
+      @click="next"
+      class="q-mb-lg"
+      :disable="!strategiesPicked"
+    >
+    </q-btn>
+    <q-btn label="Change Setup" class="setup-btn" outline color="red" to="/turn-tracker" />
   </div>
 </template>
 
@@ -48,10 +58,12 @@ import { storeToRefs } from 'pinia';
 import type { Strategy } from '@/components/turnModels';
 import { type Player } from '@/components/turnModels';
 import { computed } from 'vue';
-import SpeakerSelect from 'src/components/TurnTracker/SpeakerSelect.vue';
+import SpeakerSelect from '@/components/TurnTracker/SpeakerSelect.vue';
+import { useRouter } from 'vue-router';
+import { State } from '@/enums/turnState';
 
 const turnStore = useTurnTrackerStore();
-const { players } = storeToRefs(turnStore);
+const { players, speakerOrder } = storeToRefs(turnStore);
 
 function playerColumns() {
   if ([3, 5, 6].includes(players.value.length)) {
@@ -63,7 +75,7 @@ function playerColumns() {
 
 const strategyCards: Strategy[] = [
   { name: '1. Leadership', color: 'red-9', initiative: 1, popped: false },
-  { name: '2. Diplomacy', color: 'amber', initiative: 2, popped: false },
+  { name: '2. Diplomacy', color: 'orange', initiative: 2, popped: false },
   { name: '3. Politics', color: 'yellow-7', initiative: 3, popped: false },
   { name: '4. Construction', color: 'green-9', initiative: 4, popped: false },
   { name: '5. Trade', color: 'teal', initiative: 5, popped: false },
@@ -83,6 +95,7 @@ function setPlayerStrategy(strategy: Strategy, sortedPlayer: Player) {
     player.strategy = strategy;
   }
 }
+const choosingPlayer = computed(() => speakerOrder.value.find((p) => !p.strategy)?.id);
 
 function getStrategyCardImage(card: Strategy | null) {
   if (card) {
@@ -92,6 +105,36 @@ function getStrategyCardImage(card: Strategy | null) {
     return undefined;
   }
 }
+
+const strategiesPicked = computed(() => players.value.every((p) => p.strategy));
+
+const router = useRouter();
+function next() {
+  players.value.forEach((p) => {
+    p.passed = false;
+    p.strategy!.popped = false;
+  });
+  router
+    .push('/turn-tracker/actions')
+    .then(() => (turnStore.gameState = State.ACTION))
+    .catch((e) => console.error(e));
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.flash {
+  animation: flash 1.5s ease-in-out infinite;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+</style>

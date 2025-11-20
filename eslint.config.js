@@ -78,6 +78,7 @@ export default defineConfigWithVueTs(
       // https://github.com/typescript-eslint/typescript-eslint/blob/main/docs/linting/TROUBLESHOOTING.md#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
       'no-undef': 0,
       'vue/no-v-html': 0,
+      '@typescript-eslint/await-thenable': 'off',
     },
   },
 
